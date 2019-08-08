@@ -13,17 +13,7 @@ def prepare_data(path):
         os.makedirs(path)
 
     np.save(os.path.join(path, "train.npy"), train)
-    np.save(os.path.join(path, "test.npy"), test)
-
-
-def load_data():
-    train = np.load(os.path.join(mnist_raw_data_path, "train.npy"))
-    test = np.load(os.path.join(mnist_raw_data_path, "test.npy"))
-
-    train_dataset = tf.data.Dataset.from_tensor_slices(train).batch()
-    test_dataset = tf.data.Dataset.from_tensor_slices(test)
-
-    return train_dataset, test_dataset
+    np.save(os.path.join(path, "eval.npy"), test)
 
 
 if __name__ == "__main__":

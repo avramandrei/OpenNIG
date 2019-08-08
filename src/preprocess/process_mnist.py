@@ -4,16 +4,21 @@ import os
 
 def process_data(load_path, save_path):
     raw_train = np.load(os.path.join(load_path, "train.npy"))
-    raw_test = np.load(os.path.join(load_path, "test.npy"))
+    raw_eval = np.load(os.path.join(load_path, "eval.npy"))
 
     train = raw_train / 255
-    test = raw_test / 255
+    eval = raw_eval / 255
+
+    if len(train.shape) == 3:
+        train = np.expand_dims(train, axis=3)
+    if len(eval.shape) == 3:
+        eval = np.expand_dims(eval, axis=3)
 
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
-    np.save(os.path.join(save_path, "train.npy"), train)
-    np.save(os.path.join(save_path, "test.npy"), test)
+    np.save(os.path.join(save_path, "train.npy"), np.float32(train))
+    np.save(os.path.join(save_path, "eval.npy"), np.float32(eval))
 
 
 if __name__ == "__main__":
