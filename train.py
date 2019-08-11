@@ -1,45 +1,39 @@
-from src.models.cvae import CVAESmall
-import argparse
-from src.preparation.prepare import load_data
 import tensorflow as tf
-from src.util.losses import compute_vae_loss
 from src.util.trainer import train_model
+import yaml
+import argparse
+import src.util.yaml_parser as yaml_parser
+import os
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
-    parser.add_argument("--model", type=str)
-    parser.add_argument("--train_data", type=str)
-    parser.add_argument("--eval_data", type=str)
-    parser.add_argument("--processed", type=bool, default=False)
-
+    parser.add_argument("config_path", type=str)
     args = parser.parse_args()
 
-    config = {
-        "latent_dim": 50
-    }
+    with open(args.config_path, "r") as stream:
+        try:
+            config = yaml.safe_load(stream)
 
-    if args.model == "CVAE":
-        model = CVAESmall((28, 28, 1))
-        loss_fcn = compute_vae_loss
-    else:
-        raise ValueError("Selected model not found")
+            train_dataset, eval_dataset, processed = yaml_parser.parse_data(config)
 
-    if args.train_data is not None:
-        train_dataset = load_data(args.train_data)
-    else:
-        raise ValueError("Selected train data not found")
+            model, loss_fcn = yaml_parser.parse_model(config)
+            print("Model selected: {}\n".format(config["model"]["type"]))
+            model.summary()
 
-    if args.eval_data is not None:
-        eval_dataset = load_data(args.eval_data)
-    else:
-        raise ValueError("Selected train data not found")
+            optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path = yaml_parser.parse_train(config)
+            new_save_checkpoint_path = os.path.join(*os.path.split(save_checkpoint_path)[:-1])
+            if not os.path.exists(new_save_checkpoint_path):
+                os.makedirs(new_save_checkpoint_path)
 
-    processed = args.processed
+            eval_steps, eval_batch_size = yaml_parser.parse_eval(config)
 
-    optimizer = tf.keras.optimizers.Adam(1e-4)
-    iterations = 10000
+        except yaml.YAMLError as exc:
+            print(exc)
+            exit(0)
 
-    train_model(model, loss_fcn, train_dataset, eval_dataset, optimizer, iterations, 32)
+    train_model(model, loss_fcn,
+                train_dataset, eval_dataset, processed,
+                optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
+                eval_batch_size, eval_steps)
 

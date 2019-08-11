@@ -8,7 +8,7 @@ class CVAEBase(tf.keras.Model):
     @tf.function
     def sample(self, eps=None):
         if eps is None:
-            eps = tf.random.normal(shape=(100, self.latent_dim))
+            eps = tf.random.normal(shape=(1, self.latent_dim))
         return self.decode(eps, apply_sigmoid=True)
 
     def encode(self, x):
@@ -27,6 +27,13 @@ class CVAEBase(tf.keras.Model):
 
         return logits
 
+    def call(self, inputs, training=None, mask=None):
+        pass
+
+    def summary(self, line_length=None, positions=None, print_fn=None):
+        self.inference_net.summary()
+        self.generative_net.summary()
+
 
 class CVAESmall(CVAEBase):
     def __init__(self, input_shape):
@@ -43,7 +50,8 @@ class CVAESmall(CVAEBase):
                 tf.keras.layers.Flatten(),
                 # No activation
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
-            ]
+            ],
+            name="inference_network"
         )
 
         self.generative_net = tf.keras.Sequential(
@@ -66,5 +74,54 @@ class CVAESmall(CVAEBase):
                 # No activation
                 tf.keras.layers.Conv2DTranspose(
                     filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
-            ]
+            ],
+            name="generative_network"
         )
+
+        self.build(input_shape)
+
+
+class CVAEMedium(CVAEBase):
+    def __init__(self, input_shape):
+        super(CVAEMedium, self).__init__()
+
+        self.latent_dim = 100
+        self.inference_net = tf.keras.Sequential(
+            [
+                tf.keras.layers.InputLayer(input_shape=input_shape),
+                tf.keras.layers.Conv2D(
+                    filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
+                tf.keras.layers.Conv2D(
+                    filters=128, kernel_size=3, strides=(2, 2), activation='relu'),
+                tf.keras.layers.Flatten(),
+                # No activation
+                tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
+            ],
+            name="inference_network"
+        )
+
+        self.generative_net = tf.keras.Sequential(
+            [
+                tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
+                tf.keras.layers.Dense(units=7 * 7 * 64, activation=tf.nn.relu),
+                tf.keras.layers.Reshape(target_shape=(7, 7, 64)),
+                tf.keras.layers.Conv2DTranspose(
+                    filters=128,
+                    kernel_size=3,
+                    strides=(2, 2),
+                    padding="SAME",
+                    activation='relu'),
+                tf.keras.layers.Conv2DTranspose(
+                    filters=64,
+                    kernel_size=3,
+                    strides=(2, 2),
+                    padding="SAME",
+                    activation='relu'),
+                # No activation
+                tf.keras.layers.Conv2DTranspose(
+                    filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
+            ],
+            name="generative_network"
+        )
+
+        self.build(input_shape)

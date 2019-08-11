@@ -8,7 +8,7 @@ def _log_normal_pdf(sample, mean, logvar, raxis=1):
 
 
 @tf.function
-def compute_vae_loss(model, x):
+def vae_loss_fcn(model, x):
     mean, logvar = model.encode(x)
     z = model.reparameterize(mean, logvar)
     x_logit = model.decode(z)
