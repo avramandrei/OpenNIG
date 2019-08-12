@@ -2,8 +2,10 @@ import tensorflow as tf
 
 
 class CVAEBase(tf.keras.Model):
-    def __init__(self):
+    def __init__(self, input_shape):
         super(CVAEBase, self).__init__()
+
+        self.build(input_shape)
 
     @tf.function
     def sample(self, eps=None):
@@ -37,7 +39,7 @@ class CVAEBase(tf.keras.Model):
 
 class CVAESmall(CVAEBase):
     def __init__(self, input_shape):
-        super(CVAESmall, self).__init__()
+        super(CVAESmall, self).__init__(input_shape)
 
         self.latent_dim = 50
         self.inference_net = tf.keras.Sequential(
@@ -78,12 +80,10 @@ class CVAESmall(CVAEBase):
             name="generative_network"
         )
 
-        self.build(input_shape)
-
 
 class CVAEMedium(CVAEBase):
     def __init__(self, input_shape):
-        super(CVAEMedium, self).__init__()
+        super(CVAEMedium, self).__init__(input_shape)
 
         self.latent_dim = 100
         self.inference_net = tf.keras.Sequential(
@@ -123,5 +123,3 @@ class CVAEMedium(CVAEBase):
             ],
             name="generative_network"
         )
-
-        self.build(input_shape)

@@ -17,12 +17,19 @@ def parse_data(config):
 
 
 def parse_model(config):
+    input_shape = config["model"]["input_shape"]
+
     if config["model"]["type"] == "CVAESmall":
-        model = CVAESmall(config["data"]["shape"])
+        model = CVAESmall(input_shape)
         loss_fcn = vae_loss_fcn
     if config["model"]["type"] == "CVAEMedium":
-        model = CVAEMedium(config["data"]["shape"])
+        model = CVAEMedium(input_shape)
         loss_fcn = vae_loss_fcn
+
+    try:
+        model.load_weights(config["model"]["load_path"])
+    except KeyError:
+        pass
 
     return model, loss_fcn
 
@@ -86,3 +93,14 @@ def parse_eval(config):
         eval_steps = 32
 
     return eval_steps, batch_size
+
+
+def parse_sample(config):
+    try:
+        num_sample = config["sample"]["num"]
+    except KeyError:
+        num_sample = 10
+
+    save_path = config["sample"]["save_path"]
+
+    return num_sample, save_path

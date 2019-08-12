@@ -1,6 +1,4 @@
 import tensorflow as tf
-import matplotlib.pyplot as plt
-import numpy as np
 import time
 
 
@@ -41,11 +39,4 @@ def train_model(model, loss_fcn,
             print("Iter: {}/{} - Train loss: {}, Eval loss: {}, Time: {}".
                   format(iter, iterations, train_loss, loss_mean.result(), 0 if iter == 0 else end-start))
 
-            sample = model.sample() * 255
-
-            plt.imshow(np.squeeze(sample), cmap="gray")
-            plt.show()
-
             start = time.time()
-
-
