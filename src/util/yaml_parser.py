@@ -1,7 +1,9 @@
 from src.preparation.prepare import load_data
-from src.models.cvae import CVAESmall, CVAEMedium
-from src.util.losses import vae_loss_fcn
+from src.models.conv_vae import ConvVAESmall, ConvVAEMedium
+from src.models.conv_gan import ConvGANSmall
+from src.util.losses import vae_loss_fcn, gan_loss_fcn
 import tensorflow as tf
+from src.util.train_steps import vae_train_step, gan_train_step
 
 
 def parse_data(config):
@@ -19,19 +21,25 @@ def parse_data(config):
 def parse_model(config):
     input_shape = config["model"]["input_shape"]
 
-    if config["model"]["type"] == "CVAESmall":
-        model = CVAESmall(input_shape)
+    if config["model"]["type"] == "ConvVAESmall":
+        model = ConvVAESmall(input_shape)
         loss_fcn = vae_loss_fcn
-    if config["model"]["type"] == "CVAEMedium":
-        model = CVAEMedium(input_shape)
+        train_step = vae_train_step
+    if config["model"]["type"] == "ConvVAEMedium":
+        model = ConvVAEMedium(input_shape)
         loss_fcn = vae_loss_fcn
+        train_step = vae_train_step
+    if config["model"]["type"] == "ConvGANSmall":
+        model = ConvGANSmall(input_shape)
+        loss_fcn = gan_loss_fcn
+        train_step = gan_train_step
 
     try:
         model.load_weights(config["model"]["load_path"])
     except KeyError:
         pass
 
-    return model, loss_fcn
+    return model, train_step, loss_fcn
 
 
 def parse_train(config):
@@ -53,7 +61,12 @@ def parse_train(config):
         except KeyError:
             beta2 = 0.99
 
-        optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta1, beta_2=beta2)
+        if config["model"]["type"] == "ConvGANSmall":
+            optimizer = list()
+            optimizer.append(tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta1, beta_2=beta2))
+            optimizer.append(tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta1, beta_2=beta2))
+        else:
+            optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta1, beta_2=beta2)
 
     # extract the iterations
     try:
@@ -95,12 +108,12 @@ def parse_eval(config):
     return eval_steps, batch_size
 
 
-def parse_sample(config):
+def parse_generate(config):
     try:
-        num_sample = config["sample"]["num"]
+        num_sample = config["generate"]["num"]
     except KeyError:
         num_sample = 10
 
-    save_path = config["sample"]["save_path"]
+    save_path = config["generate"]["save_path"]
 
     return num_sample, save_path

@@ -2,17 +2,7 @@ import tensorflow as tf
 import time
 
 
-@tf.function
-def _compute_apply_gradients(model, x, optimizer, loss_fcn):
-    with tf.GradientTape() as tape:
-        loss = loss_fcn(model, x)
-    gradients = tape.gradient(loss, model.trainable_variables)
-    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-
-    return loss
-
-
-def train_model(model, loss_fcn,
+def train_model(model, train_step, loss_fcn,
                 train_dataset, eval_dataset, processed,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
                 eval_batch_size, eval_steps):
@@ -23,7 +13,7 @@ def train_model(model, loss_fcn,
         if iter > iterations:
             break
 
-        train_loss = _compute_apply_gradients(model, train_batch, optimizer, loss_fcn)
+        train_loss = train_step(model, train_batch, optimizer)
 
         if iter % save_checkpoint_steps == 0:
             print("Iter: {}/{} - Checkpoint reached. Saving the model...".format(iter, iterations))

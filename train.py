@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
             train_dataset, eval_dataset, processed = yaml_parser.parse_data(config)
 
-            model, loss_fcn = yaml_parser.parse_model(config)
+            model, train_step, loss_fcn = yaml_parser.parse_model(config)
             print("Model selected: {}\n".format(config["model"]["type"]))
             model.summary()
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
             print(exc)
             exit(0)
 
-    train_model(model, loss_fcn,
+    train_model(model, train_step, loss_fcn,
                 train_dataset, eval_dataset, processed,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
                 eval_batch_size, eval_steps)

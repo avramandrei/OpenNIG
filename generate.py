@@ -1,4 +1,4 @@
-from src.util.sampler import generate_samples
+from src.util.generator import generate_samples
 import yaml
 import argparse
 import src.util.yaml_parser as yaml_parser
@@ -14,11 +14,11 @@ if __name__ == "__main__":
         try:
             config = yaml.safe_load(stream)
 
-            model, _ = yaml_parser.parse_model(config)
+            model, _, _ = yaml_parser.parse_model(config)
             print("Model selected: {}\n".format(config["model"]["type"]))
             model.summary()
 
-            num_sample, sample_save_path = yaml_parser.parse_sample(config)
+            num_sample, sample_save_path = yaml_parser.parse_generate(config)
             if not os.path.exists(sample_save_path):
                 os.makedirs(sample_save_path)
 

@@ -1,14 +1,14 @@
 import tensorflow as tf
 
 
-class CVAEBase(tf.keras.Model):
+class ConvVAEBase(tf.keras.Model):
     def __init__(self, input_shape):
-        super(CVAEBase, self).__init__()
+        super(ConvVAEBase, self).__init__()
 
         self.build(input_shape)
 
     @tf.function
-    def sample(self, eps=None):
+    def generate(self, eps=None):
         if eps is None:
             eps = tf.random.normal(shape=(1, self.latent_dim))
         return self.decode(eps, apply_sigmoid=True)
@@ -37,20 +37,21 @@ class CVAEBase(tf.keras.Model):
         self.generative_net.summary()
 
 
-class CVAESmall(CVAEBase):
+class ConvVAESmall(ConvVAEBase):
     def __init__(self, input_shape):
-        super(CVAESmall, self).__init__(input_shape)
+        super(ConvVAESmall, self).__init__(input_shape)
 
         self.latent_dim = 50
         self.inference_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
+
                 tf.keras.layers.Conv2D(
                     filters=32, kernel_size=3, strides=(2, 2), activation='relu'),
                 tf.keras.layers.Conv2D(
                     filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
+
                 tf.keras.layers.Flatten(),
-                # No activation
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
             ],
             name="inference_network"
@@ -61,19 +62,11 @@ class CVAESmall(CVAEBase):
                 tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
                 tf.keras.layers.Dense(units=7 * 7 * 32, activation=tf.nn.relu),
                 tf.keras.layers.Reshape(target_shape=(7, 7, 32)),
+
                 tf.keras.layers.Conv2DTranspose(
-                    filters=64,
-                    kernel_size=3,
-                    strides=(2, 2),
-                    padding="SAME",
-                    activation='relu'),
+                    filters=64, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
                 tf.keras.layers.Conv2DTranspose(
-                    filters=32,
-                    kernel_size=3,
-                    strides=(2, 2),
-                    padding="SAME",
-                    activation='relu'),
-                # No activation
+                    filters=32, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
                 tf.keras.layers.Conv2DTranspose(
                     filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
             ],
@@ -81,20 +74,21 @@ class CVAESmall(CVAEBase):
         )
 
 
-class CVAEMedium(CVAEBase):
+class ConvVAEMedium(ConvVAEBase):
     def __init__(self, input_shape):
-        super(CVAEMedium, self).__init__(input_shape)
+        super(ConvVAEMedium, self).__init__(input_shape)
 
         self.latent_dim = 100
         self.inference_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
+
                 tf.keras.layers.Conv2D(
                     filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
                 tf.keras.layers.Conv2D(
                     filters=128, kernel_size=3, strides=(2, 2), activation='relu'),
+
                 tf.keras.layers.Flatten(),
-                # No activation
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
             ],
             name="inference_network"
@@ -105,19 +99,11 @@ class CVAEMedium(CVAEBase):
                 tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
                 tf.keras.layers.Dense(units=7 * 7 * 64, activation=tf.nn.relu),
                 tf.keras.layers.Reshape(target_shape=(7, 7, 64)),
+
                 tf.keras.layers.Conv2DTranspose(
-                    filters=128,
-                    kernel_size=3,
-                    strides=(2, 2),
-                    padding="SAME",
-                    activation='relu'),
+                    filters=128, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
                 tf.keras.layers.Conv2DTranspose(
-                    filters=64,
-                    kernel_size=3,
-                    strides=(2, 2),
-                    padding="SAME",
-                    activation='relu'),
-                # No activation
+                    filters=64, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
                 tf.keras.layers.Conv2DTranspose(
                     filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
             ],
