@@ -3,6 +3,7 @@
 OpenNGen (Open Neural Generators) is a general purpose data generator toolkit using TensorFlow 2.0. Supported architectures:
 
 - [variational autoencoder](https://arxiv.org/abs/1312.6114)
+- [generative adversarial network](https://arxiv.org/abs/1406.2661)
 
 ## Key features
 
