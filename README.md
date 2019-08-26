@@ -20,24 +20,19 @@ OpenNGen requires:
  
 ### Data preparation
 
-Data must be saved in Numpy `.npy` files. In this example we will use the mnist data set to generate new images. For this purpose, two 
-script have been created: `prepare_mnist.py` and `process_mnist.py`, located in 
-[src/preparation](https://github.com/avramus/OpenNGen/tree/master/src/preparation) and 
-[src/preprocess](https://github.com/avramus/OpenNGen/tree/master/src/preprocess), respectievly. Run them to create the train and
-the evaluation `.npy` files in `src/data/processed/`.
+Data must be saved in Numpy `.npy` files. In this example we will use the mnist data set to generate new images. For this purpose, use 
+the `download.py` script with `mnist` as argument. This command will automatically download mnist(raw and processed) dataset in `data/` directory.
 
 ```
-python3 prepare_mnist.py
-python3 process_mnist.py
+python3 download.py mnist
 ```
 
 ### Training
 
-To train a model you need to create a `YAML` configuration file. [Here]() you can find a simple train configuration file and [here]() you 
-can find all the configuration parameters. One you have created the configuration file, run `train.py` with the created file as parameter.
+To train a model you need to create a `YAML` configuration file. [Here]() you can find a simple train configuration file and [here]() is an exhaustive list of all the configuration parameters. One you have created the configuration file, run `train.py` with the created file as parameter.
 
 ```
-train.py <path_to_yaml_config_file>
+python3 train.py <path_to_yaml_config_file>
 ```
 
 ### Generate
@@ -45,6 +40,6 @@ train.py <path_to_yaml_config_file>
 To generate a new sample run `generate.py` with a `YAML` configuration file as parameter.
 
 ```
-generate.py <path_to_yaml_config_file>
+python3 generate.py <path_to_yaml_config_file>
 ```
 
