@@ -20,8 +20,8 @@ OpenNGen requires:
  
 ### Data preparation
 
-Data must be saved in Numpy `.npy` files. In this example we will use the mnist data set to generate new images. For this purpose, use 
-the `download.py` script with `mnist` as argument. This command will automatically download mnist(raw and processed) dataset in `data/` directory.
+Data must be saved in Numpy `.npy` files. In this example we will use the mnist dataset to generate new images. For this purpose, use 
+the `download.py` script with `mnist` as argument. This command will automatically download mnist (raw and processed) dataset in `data/` directory.
 
 ```
 python3 download.py mnist
