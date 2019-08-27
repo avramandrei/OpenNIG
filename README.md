@@ -30,7 +30,7 @@ python3 download.py mnist
 
 ### Training
 
-To train a model you need to create a `YAML` configuration file. [Here]() you can find a simple train configuration file and [here]() is an exhaustive list of all the configuration parameters. One you have created the configuration file, run `train.py` with the created file as parameter.
+To train a model you need to create a `YAML` configuration file. [Here](https://github.com/avramandrei/OpenNGen/blob/master/examples/yaml_config/config_docs.yml) you can find an exhaustive list of all the configuration parameters. One you have created the `YAML` configuration file, run `train.py`.
 
 ```
 python3 train.py <path_to_yaml_config_file>
