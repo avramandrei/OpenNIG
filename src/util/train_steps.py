@@ -26,4 +26,4 @@ def gan_train_step(model, x, optimizer):
     generator_optimizer.apply_gradients(zip(gradients_of_generator, model.generative_net.trainable_variables))
     discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
-    return (gen_loss + disc_loss)/2
+    return gen_loss

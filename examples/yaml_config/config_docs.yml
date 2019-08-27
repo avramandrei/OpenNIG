@@ -1,0 +1,49 @@
+# This is an exhaustive list of all the yaml parameters that can be used to configure the OpenNGen processes.
+
+# Data configuration
+data:
+  # Path to the train .npy file.
+  train_path:
+  # Path to the evaluation .npy file.
+  eval_path:
+  # (optional) Boolean value that shows if data is processed (default: false).
+  processed:
+
+# Model configuration
+model:
+  # Shape of the input data given as an array of numbers (e.g. [28, 28, 1]).
+  input_data:
+  # Model type (e.g. ConvGANSmall).
+  type:
+  # (optional) The path to a loading checkpoint of an existing model.
+  load_path:
+
+# Train configuration
+train:
+  # Optimizer class name in tf.keras.optimizers
+  optimizer:
+  # (optional) Additional optimizer parameters as defined in their documentation.
+  optimizer_params:
+  # (optional) Learning rate of the training process (default: 1e-3).
+  learning_rate:
+  # (optional) Batch size of the training process (default: 32).
+  batch_size: 32
+  # (optional) Number of iterations to train the model (default: 1e5).
+  iterations:
+  # (optional) Save a checkpoint every this many steps (default: 1000).
+  save_checkpoint_steps:
+  # (optional) Save the checkpoints at this path (default: trained_models/model).
+  save_checkpoint_path:
+
+# Evaluation configuration
+eval:
+  # (optional) Batch size of the evaluation process (default: 32).
+  batch_size:
+  # (optional) Evaluate the model every this many steps (default: 1000).
+  eval_steps:
+
+generate:
+  # (optional) Number of samples to generate (default: 10).
+  num_samples:
+  # (optional) Path where the samples will be saved (default: samples).
+  save_path:

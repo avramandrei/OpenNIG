@@ -7,8 +7,8 @@ from src.util.train_steps import vae_train_step, gan_train_step
 
 
 def parse_data(config):
-    train_dataset = load_data(config["data"]["train"])
-    eval_dataset = load_data(config["data"]["eval"])
+    train_dataset = load_data(config["data"]["train_path"])
+    eval_dataset = load_data(config["data"]["eval_path"])
 
     try:
         processed = config["data"]["processed"]
@@ -50,7 +50,7 @@ def parse_train(config):
         learning_rate = 1e-3
 
     # construct the optimizer
-    if config["train"]["optimizer"] == "AdamOptimizer":
+    if config["train"]["optimizer"] == "Adam":
         try:
             beta1 = config["train"]["optimizer_params"]["beta1"]
         except KeyError:
@@ -72,7 +72,7 @@ def parse_train(config):
     try:
         iterations = config["train"]["iterations"]
     except KeyError:
-        iterations = 100000
+        iterations = 1e5
 
     # extract the batch_size
     try:
@@ -103,17 +103,20 @@ def parse_eval(config):
     try:
         eval_steps = config["eval"]["eval_steps"]
     except KeyError:
-        eval_steps = 32
+        eval_steps = 1000
 
     return eval_steps, batch_size
 
 
 def parse_generate(config):
     try:
-        num_sample = config["generate"]["num"]
+        num_sample = config["generate"]["num_samples"]
     except KeyError:
         num_sample = 10
 
-    save_path = config["generate"]["save_path"]
+    try:
+        save_path = config["generate"]["save_path"]
+    except KeyError:
+        save_path = "samples"
 
     return num_sample, save_path
