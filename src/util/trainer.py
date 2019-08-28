@@ -31,7 +31,7 @@ def train_model(model, train_step, loss_fcn,
                       .format(iter, iterations, num_train_samples, model.name))
 
                 generate_gif_train_samples(model, num_train_samples,
-                                           noise, os.path.join(save_checkpoint_path, "train_samples"))
+                                           noise, os.path.join(save_checkpoint_path, "conv_gan"))
 
         if iter % eval_steps == 0:
             loss_mean = tf.keras.metrics.Mean()
