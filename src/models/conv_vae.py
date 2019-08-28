@@ -11,6 +11,7 @@ class ConvVAEBase(tf.keras.Model):
     def generate(self, eps=None):
         if eps is None:
             eps = tf.random.normal(shape=(1, self.latent_dim))
+
         return self.decode(eps, apply_sigmoid=True)
 
     def encode(self, x):

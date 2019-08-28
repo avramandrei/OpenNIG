@@ -1,4 +1,4 @@
-from src.util.generator import generate_samples
+from src.util.generator import generate_png_samples, generate_gif_samples
 import yaml
 import argparse
 import src.util.yaml_parser as yaml_parser
@@ -14,7 +14,7 @@ if __name__ == "__main__":
         try:
             config = yaml.safe_load(stream)
 
-            model, _, _ = yaml_parser.parse_model(config)
+            model, _, _= yaml_parser.parse_model(config)
             print("Model selected: {}\n".format(config["model"]["type"]))
             model.summary()
 
@@ -26,4 +26,4 @@ if __name__ == "__main__":
             print(exc)
             exit(0)
 
-    generate_samples(model, num_sample, sample_save_path)
+    generate_png_samples(model, num_sample, sample_save_path)

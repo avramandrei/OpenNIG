@@ -1,9 +1,7 @@
-import tensorflow as tf
 from src.util.trainer import train_model
 import yaml
 import argparse
 import src.util.yaml_parser as yaml_parser
-import os
 
 
 if __name__ == "__main__":
@@ -21,10 +19,9 @@ if __name__ == "__main__":
             print("Model selected: {}\n".format(config["model"]["type"]))
             model.summary()
 
-            optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path = yaml_parser.parse_train(config)
-            new_save_checkpoint_path = os.path.join(*os.path.split(save_checkpoint_path)[:-1])
-            if not os.path.exists(new_save_checkpoint_path):
-                os.makedirs(new_save_checkpoint_path)
+            optimizer, iterations, batch_size, \
+            save_checkpoint_steps, save_checkpoint_path, \
+            generate_train_samples, num_train_samples = yaml_parser.parse_train(config)
 
             eval_steps, eval_batch_size = yaml_parser.parse_eval(config)
 
@@ -35,5 +32,6 @@ if __name__ == "__main__":
     train_model(model, train_step, loss_fcn,
                 train_dataset, eval_dataset, processed,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
-                eval_batch_size, eval_steps)
+                eval_batch_size, eval_steps,
+                generate_train_samples, num_train_samples)
 

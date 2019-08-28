@@ -7,8 +7,9 @@ class ConvGANBase(tf.keras.Model):
 
         self.build(input_shape)
 
-    def generate(self):
-        noise = tf.random.normal([1, self.noise_size])
+    def generate(self, noise=None):
+        if noise is None:
+            noise = tf.random.normal([1, self.noise_size])
         return self.generative_net(noise)
 
     def call(self, inputs, training=None, mask=None):
@@ -23,10 +24,10 @@ class ConvGANSmall(ConvGANBase):
     def __init__(self, input_shape):
         super(ConvGANSmall, self).__init__(input_shape)
 
-        self.noise_size = 100
+        self.latent_dim = 100
         self.generative_net = tf.keras.Sequential(
             [
-                tf.keras.layers.InputLayer(input_shape=self.noise_size),
+                tf.keras.layers.InputLayer(input_shape=self.latent_dim),
 
                 tf.keras.layers.Dense(7 * 7 * 256),
                 tf.keras.layers.BatchNormalization(),

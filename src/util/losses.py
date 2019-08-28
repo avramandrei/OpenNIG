@@ -36,7 +36,7 @@ def gen_loss_fcn(fake_output):
 def gan_loss_fcn(model, x):
     batch_size = x.shape[0]
 
-    noise = tf.random.normal([batch_size, model.noise_size])
+    noise = tf.random.normal([batch_size, model.latent_dim])
 
     generated_images = model.generative_net(noise, training=True)
 

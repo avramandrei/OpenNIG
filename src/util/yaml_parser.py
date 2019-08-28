@@ -91,7 +91,20 @@ def parse_train(config):
     except KeyError:
         save_checkpoint_path = "trained_models/model"
 
-    return optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path
+    try:
+        generate_train_samples = config["train"]["generate_train_samples"]
+    except KeyError:
+        generate_train_samples = True
+
+    try:
+        num_train_samples = config["train"]["num_train_samples"]
+    except KeyError:
+        num_train_samples = 10
+
+    return optimizer, \
+           int(iterations), batch_size,\
+           save_checkpoint_steps, save_checkpoint_path, \
+           generate_train_samples, num_train_samples
 
 
 def parse_eval(config):

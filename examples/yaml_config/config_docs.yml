@@ -34,6 +34,10 @@ train:
   save_checkpoint_steps:
   # (optional) Save the checkpoints at this path (default: trained_models/model).
   save_checkpoint_path:
+  # (optional) Whether to generate samples at training time (default: True).
+  generate_train_samples:
+  # (optional) Number of train gif samples to generate (default: 10).
+  num_train_samples:
 
 # Evaluation configuration
 eval:
