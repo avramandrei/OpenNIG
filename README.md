@@ -40,7 +40,9 @@ To train, run `train.py` with a `YAML` configuration file as parameter.
 python3 train.py <path_to_yaml_config_file>
 ```
 
-This script will automatically generate 10 samples that shows how the training process evolves at evrey checkpoint. To disable this functionality, set `generate_train_samples` to `False` in `YAML` configuration file. The following samples show how the training process evolved for several models that can be found in `OpenNGen`.
+This script will automatically generate 10 samples that shows how the training process evolves at evrey checkpoint. To disable this functionality, set `generate_train_samples` to `False` in `YAML` configuration file. 
+
+
 
 ### Generate
 
