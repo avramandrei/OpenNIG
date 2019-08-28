@@ -19,7 +19,7 @@ OpenNGen requires:
  - Python >= 3.6
  - TensorFlow >= 2.0
  
-### Data preparation
+### Data processing
 
 Data must be saved in Numpy `.npy` files. In this example we will use the mnist dataset to generate new images. For this purpose, use 
 the `download.py` script with `mnist` as argument. This command will automatically download mnist (raw and processed) dataset in `data/` directory.
@@ -28,17 +28,23 @@ the `download.py` script with `mnist` as argument. This command will automatical
 python3 download.py mnist
 ```
 
-### Training
+### Configuration
 
-To train a model you need to create a `YAML` configuration file. [Here](https://github.com/avramandrei/OpenNGen/blob/master/examples/yaml_config/config_docs.yml) you can find an exhaustive list of all the configuration parameters. Now run `train.py` with the created configuration file as parameter.
+To train and generate new samples, a `YAML` configuration file must be provided. [Here](https://github.com/avramandrei/OpenNGen/blob/master/examples/yaml_config/config_docs.yml) is an exhaustive list of all the configuration parameters.
+
+### Train
+
+To train, run `train.py` with a `YAML` configuration file as parameter.
 
 ```
 python3 train.py <path_to_yaml_config_file>
 ```
 
+This script will automatically generate 10 samples that shows how the training process evolves at evrey checkpoint. To disable this functionality, set `generate_train_samples` to `False` in `YAML` configuration file. The following samples show how the training process evolved for several models that can be found in `OpenNGen`.
+
 ### Generate
 
-To generate a new sample run `generate.py` with a `YAML` configuration file as parameter.
+To generate a new sample, run `generate.py` with a `YAML` configuration file as parameter.
 
 ```
 python3 generate.py <path_to_yaml_config_file>
