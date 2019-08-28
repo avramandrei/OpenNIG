@@ -1,9 +1,11 @@
 # OpenGen (Work in progress...)
 
-OpenGen (Open Neural Generators) is a general purpose data generator toolkit using TensorFlow 2.0. Supported architectures:
+OpenGen is a general purpose data generator toolkit that uses TensorFlow 2.0. Supported architectures:
 
 - [variational autoencoder](https://arxiv.org/abs/1312.6114)
 - [generative adversarial network](https://arxiv.org/abs/1406.2661)
+
+To install it 
 
 ## Key features
 
@@ -12,12 +14,32 @@ OpenGen focuses on modularity to support advanced modeling and training capabili
  - usage of predefined models
  - creation of custom architectures
  - domain adaptation
+ 
+## Installation
+
+### Clone repository
+
+If you want to use OpenGen as a command line interface where the processes of training, evaluating etc. are all automated, run the following commands:
+
+```
+git clone https://github.com/avramandrei/OpenGen.git
+pip install -r requirements.txt
+```
+
+### pip
+
+If you want to use OpenGen as an API and have more flexibility, install it via pip:
+
+```
+pip install opengen-tf
+```
 
 ## Usage
 
 OpenGen requires:
  - Python >= 3.6
  - TensorFlow >= 2.0
+ - Pillow >=6.1
  
 ### Data processing
 
