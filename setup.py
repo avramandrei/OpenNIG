@@ -12,12 +12,12 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/avramandrei/OpenGen",
-	keywords="generative-models tensorflow generative-adversarial-network gan variational-autoencoder vae",
-	license="MIT",
-	install_requires=[
-		"tensorflow>=2.0.0",
-		"Pillow"
-	],
+    keywords="generative-models tensorflow generative-adversarial-network gan variational-autoencoder vae",
+    license="MIT",
+    install_requires=[
+	"tensorflow>=2.0.0",
+	"Pillow"
+    ],
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
