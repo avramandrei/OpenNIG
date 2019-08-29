@@ -1,7 +1,7 @@
 import tensorflow as tf
 import time
 import os
-from opengen.util.generator import generate_gif_train_samples
+from opennng.util.generator import generate_gif_train_samples
 
 
 def train_model(model, train_step, loss_fcn,

@@ -1,7 +1,7 @@
-from opengen.util.trainer import train_model
+from opennng.util.trainer import train_model
 import yaml
 import argparse
-import opengen.util.yaml_parser as yaml_parser
+import opennng.util.yaml_parser as yaml_parser
 import os
 
 

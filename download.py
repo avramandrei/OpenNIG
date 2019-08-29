@@ -1,6 +1,6 @@
 import argparse
-import opengen.preparation.prepare_mnist as prepare_mnist
-import opengen.preprocess.process_mnist as process_mnist
+import opennng.preparation.prepare_mnist as prepare_mnist
+import opennng.preprocess.process_mnist as process_mnist
 import os
 
 if __name__ == "__main__":

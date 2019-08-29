@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="opennng",
-    version="0.1.7",
+    version="0.1.8",
     author="Andrei-Marius Avram",
     author_email="avram.andreimarius@gmail.com",
     description="OpenNNG is a toolkit that offers an easy interface to generative models.",

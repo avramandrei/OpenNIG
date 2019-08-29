@@ -1,7 +1,7 @@
-from opengen.util.generator import generate_png_samples
+from opennng.util.generator import generate_png_samples
 import yaml
 import argparse
-import opengen.util.yaml_parser as yaml_parser
+import opennng.util.yaml_parser as yaml_parser
 import os
 
 
