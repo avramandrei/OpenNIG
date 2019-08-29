@@ -1,9 +1,25 @@
+"""
+    This module is responsible for generating training steps for each model.
+"""
+
+
 from opennng.util.losses import vae_loss_fcn, gan_loss_fcn
 import tensorflow as tf
 
 
 @tf.function
 def vae_train_step(model, x, optimizer):
+    """
+        This function calculates a training step for the Variational Autoencoder.
+
+        Args:
+            model (tf.keras.model): The Variational Autoencoder model.
+            x (tf.Tensor): The input.
+            optimizer: The optimizer used by the training.
+
+        Returns:
+            The loss value.
+    """
     with tf.GradientTape() as tape:
         loss = vae_loss_fcn(model, x)
     gradients = tape.gradient(loss, model.trainable_variables)
@@ -14,6 +30,17 @@ def vae_train_step(model, x, optimizer):
 
 @tf.function
 def gan_train_step(model, x, optimizer):
+    """
+    This function calculates a training step for the Generative Adversarial Network.
+
+        Args:
+            model (tf.keras.model): The Variational Autoencoder model.
+            x (tf.Tensor): The input.
+            optimizer: The optimizer used by the training.
+
+        Returns:
+            The loss value.
+    """
     generator_optimizer = optimizer[0]
     discriminator_optimizer = optimizer[1]
 

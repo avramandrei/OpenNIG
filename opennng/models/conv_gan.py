@@ -16,7 +16,7 @@ class ConvGANBase(tf.keras.Model):
         (generative_net) and a discriminative network (discriminative_net) whose architecture is defined in each
         subclass.
 
-        The generative network transforms the latent variable (noise) into an image. Input shape: (batch_size,
+        The generative network transforms the latent sample space (noise) into images. Input shape: (batch_size,
         latent_dim), output_shape: (batch_size, height, width, depth).
 
         The discriminative network classifies an image in either real or fake. Input shape: (batch_size, height, width,
@@ -29,14 +29,14 @@ class ConvGANBase(tf.keras.Model):
 
     def generate(self, noise=None):
         """
-            This function generates an observation from the latent space, using the generative network. It can receive
-            the value of the latent variable (noise) to generate the observed variable.
+            This function generates an observation from the latent sample space, using the generative network. The
+            function can receive the value of the sample (noise) or generate one.
 
             Args:
-                noise (tf.Tensor): Tensor that contains the value of the latent variable. Shape: [1, latent_dim].
+                noise (tf.Tensor): Tensor that contains the value of the latent sample. Shape: (1, latent_dim).
 
             Returns:
-                A tensor that contains the observed variable.
+                A tensor that contains the observed sample. Shape: (batch_size, height, width, depth).
         """
         if noise is None:
             noise = tf.random.normal([1, self.latent_dim])
