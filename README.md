@@ -5,8 +5,6 @@ OpenGen is a general purpose data generator toolkit that uses TensorFlow 2.0. Su
 - [variational autoencoder](https://arxiv.org/abs/1312.6114)
 - [generative adversarial network](https://arxiv.org/abs/1406.2661)
 
-To install it 
-
 ## Key features
 
 OpenGen focuses on modularity to support advanced modeling and training capabilities:
