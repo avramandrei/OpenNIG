@@ -24,10 +24,10 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Development Status :: 3 - Alpha",
-		"Intended Audience :: Developers",
-		"Intended Audience :: Information Technology",
-		"Intended Audience :: Science/Research",
+	"Intended Audience :: Developers",
+	"Intended Audience :: Information Technology",
+	"Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
-		"Topic :: Scientific/Engineering :: Visualization"
+	"Topic :: Scientific/Engineering :: Visualization"
     ],
 )
