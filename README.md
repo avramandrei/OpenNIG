@@ -29,14 +29,14 @@ pip install -r requirements.txt
 If you want to use OpenNNG as an API and have more flexibility, install it via pip:
 
 ```
-pip install open-nng
+pip install opennng
 ```
 
 ## Usage
 
 OpenNNG requires:
  - Python >= 3.6
- - TensorFlow >= 2.0
+ - TensorFlow >= 2.0.0rc0
  - Pillow >=6.1
  
 ### Data processing

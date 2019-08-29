@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="opennng",
-    version="0.1.6",
+    version="0.1.7",
     author="Andrei-Marius Avram",
     author_email="avram.andreimarius@gmail.com",
     description="OpenNNG is a toolkit that offers an easy interface to generative models.",
@@ -15,8 +15,8 @@ setuptools.setup(
     keywords="generative-models tensorflow generative-adversarial-network gan variational-autoencoder vae",
     license="MIT",
     install_requires=[
-	"tensorflow>=2.0.0",
-	"Pillow"
+	"tensorflow>=2.0.0rc0",
+	"Pillow>=6.1.0"
     ],
     packages=setuptools.find_packages(),
     classifiers=[
