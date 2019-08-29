@@ -1,15 +1,38 @@
 import tensorflow as tf
 
+"""
+
+This module implements Generative Adversarial Networks (GANs) that use convolutional layers: ConvGANSmall, ConvGANMedium,
+ConvGANBig.
+
+Original paper: https://arxiv.org/abs/1406.2661.
+
+"""
+
 
 class ConvGANBase(tf.keras.Model):
+    """
+        This is the base class for all the Convolutional GANs. It is composed of two submodels, a generative network
+        and a discriminative network (see the paper for more info) whose architecture is defined in each subclass.
+    """
     def __init__(self, input_shape):
         super(ConvGANBase, self).__init__()
 
         self.build(input_shape)
 
     def generate(self, noise=None):
+        """
+            This function generates an observation from the latent space, using the generative network. It can receive
+            the value of the latent variable (noise) to generate the observed variable.
+
+            Args:
+                noise (tf.Tensor): Tensor that contains the value of the latent variable. Shape: [1, latent_dim].
+
+            Returns:
+                A tensor that contains the observed variable.
+        """
         if noise is None:
-            noise = tf.random.normal([1, self.noise_size])
+            noise = tf.random.normal([1, self.latent_dim])
         return self.generative_net(noise)
 
     def call(self, inputs, training=None, mask=None):

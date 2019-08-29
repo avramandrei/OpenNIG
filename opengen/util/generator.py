@@ -1,7 +1,6 @@
 import os
 import numpy as np
 from PIL import Image, ImageSequence
-from PIL import GifImagePlugin
 
 
 def generate_png_samples(model, num_sample, samples_save_path):

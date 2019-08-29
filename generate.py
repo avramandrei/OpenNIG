@@ -1,7 +1,7 @@
-from src.util.generator import generate_png_samples, generate_gif_samples
+from opengen.util.generator import generate_png_samples
 import yaml
 import argparse
-import src.util.yaml_parser as yaml_parser
+import opengen.util.yaml_parser as yaml_parser
 import os
 
 

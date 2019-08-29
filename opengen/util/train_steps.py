@@ -1,4 +1,4 @@
-from src.util.losses import vae_loss_fcn, gan_loss_fcn
+from opengen.util.losses import vae_loss_fcn, gan_loss_fcn
 import tensorflow as tf
 
 

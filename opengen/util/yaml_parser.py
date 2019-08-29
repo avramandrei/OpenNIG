@@ -1,9 +1,9 @@
-from src.preparation.prepare import load_data
-from src.models.conv_vae import ConvVAESmall, ConvVAEMedium
-from src.models.conv_gan import ConvGANSmall
-from src.util.losses import vae_loss_fcn, gan_loss_fcn
+from opengen.preparation.prepare import load_data
+from opengen.models.conv_vae import ConvVAESmall, ConvVAEMedium
+from opengen.models.conv_gan import ConvGANSmall
+from opengen.util.losses import vae_loss_fcn, gan_loss_fcn
 import tensorflow as tf
-from src.util.train_steps import vae_train_step, gan_train_step
+from opengen.util.train_steps import vae_train_step, gan_train_step
 
 
 def parse_data(config):

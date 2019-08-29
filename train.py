@@ -1,7 +1,7 @@
-from src.util.trainer import train_model
+from opengen.util.trainer import train_model
 import yaml
 import argparse
-import src.util.yaml_parser as yaml_parser
+import opengen.util.yaml_parser as yaml_parser
 
 
 if __name__ == "__main__":
