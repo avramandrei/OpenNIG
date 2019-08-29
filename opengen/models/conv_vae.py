@@ -1,7 +1,30 @@
+"""
+
+This module implements Variational Autoencoders (VAE) that use convolutional layers: ConvVAESmall, ConvVAEMedium,
+ConvVAEBig.
+
+Original paper: https://arxiv.org/abs/1312.6114.
+
+"""
+
 import tensorflow as tf
 
 
 class ConvVAEBase(tf.keras.Model):
+    """
+        This is the base class for all the Convolutional VAEs. It is composed of two submodels, an inference network
+        (inference_net) and a generative network (generative_net) whose architecture is defined in each
+        subclass.
+
+        The inference network transforms an image into a latent variable that represents the mean and the variance of
+        the normal distribution. Input_shape: (batch_size, height, width, depth), output_shape: (batch_size,
+        latent_dim).
+
+        The generative network takes a sample from the normal latent distribution (mean+var*eps) and creates an image
+        from it.
+
+    """
+
     def __init__(self, input_shape):
         super(ConvVAEBase, self).__init__()
 

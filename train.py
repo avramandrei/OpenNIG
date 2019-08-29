@@ -2,6 +2,7 @@ from opengen.util.trainer import train_model
 import yaml
 import argparse
 import opengen.util.yaml_parser as yaml_parser
+import os
 
 
 if __name__ == "__main__":

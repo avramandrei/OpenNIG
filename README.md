@@ -1,13 +1,13 @@
-# OpenGen (Work in progress...)
+# OpenNNG (Work in progress...)
 
-OpenGen is a general purpose data generator toolkit that uses TensorFlow 2.0. Supported architectures:
+OpenNNG (Open Neural Network Generator) is a general purpose data generator toolkit that uses TensorFlow 2.0. Supported architectures:
 
 - [variational autoencoder](https://arxiv.org/abs/1312.6114)
 - [generative adversarial network](https://arxiv.org/abs/1406.2661)
 
 ## Key features
 
-OpenGen focuses on modularity to support advanced modeling and training capabilities:
+OpenNNG focuses on modularity to support advanced modeling and training capabilities:
 
  - usage of predefined models
  - creation of custom architectures
@@ -17,24 +17,24 @@ OpenGen focuses on modularity to support advanced modeling and training capabili
 
 ### Clone repository
 
-If you want to use OpenGen as a command line interface where the processes of training, evaluating etc. are all automated, run the following commands:
+If you want to use OpenNNG as a command line interface where the processes of training, evaluating etc. are all automated, run the following commands:
 
 ```
-git clone https://github.com/avramandrei/OpenGen.git
+git clone https://github.com/avramandrei/OpenNNG.git
 pip install -r requirements.txt
 ```
 
 ### pip
 
-If you want to use OpenGen as an API and have more flexibility, install it via pip:
+If you want to use OpenNNG as an API and have more flexibility, install it via pip:
 
 ```
-pip install opengen-tf
+pip install open-nng
 ```
 
 ## Usage
 
-OpenGen requires:
+OpenNNG requires:
  - Python >= 3.6
  - TensorFlow >= 2.0
  - Pillow >=6.1
@@ -50,7 +50,7 @@ python3 download.py mnist
 
 ### Configuration
 
-To train and generate new samples, a `YAML` configuration file must be provided. [Here](https://github.com/avramandrei/OpenGen/blob/master/examples/yaml_config/config_docs.yml) is an exhaustive list of all the configuration parameters.
+To train and generate new samples, a `YAML` configuration file must be provided. [Here](https://github.com/avramandrei/OpenNNG/blob/master/examples/yaml_config/config_docs.yml) is an exhaustive list of all the configuration parameters.
 
 ### Train
 
@@ -64,8 +64,8 @@ This script will automatically generate 10 samples that shows how the training p
 
 | Model | Samples |
 | --- | --- |
-| ConvVAESmall | ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_1.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_2.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_3.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_4.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_5.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_6.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_7.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_8.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_9.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_vae/train_sameple_10.gif?raw=true) |
-| ConvGANSmall | ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_1.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_2.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_3.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_4.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_5.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_6.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_7.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_8.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_9.gif) ![alt text](https://github.com/avramandrei/OpenGen/blob/master/examples/train_samples/conv_gan/train_sameple_10.gif) |
+| ConvVAESmall | ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_1.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_2.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_3.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_4.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_5.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_6.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_7.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_8.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_9.gif?raw=true) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_vae/train_sameple_10.gif?raw=true) |
+| ConvGANSmall | ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_1.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_2.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_3.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_4.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_5.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_6.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_7.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_8.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_9.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/train_samples/conv_gan/train_sameple_10.gif) |
 
 
 ### Generate

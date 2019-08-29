@@ -1,4 +1,4 @@
-name="opengen"
+name="opennng"
 
 from .models import *
 from .preparation import *

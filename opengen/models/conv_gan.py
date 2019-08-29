@@ -1,5 +1,3 @@
-import tensorflow as tf
-
 """
 
 This module implements Generative Adversarial Networks (GANs) that use convolutional layers: ConvGANSmall, ConvGANMedium,
@@ -9,11 +7,20 @@ Original paper: https://arxiv.org/abs/1406.2661.
 
 """
 
+import tensorflow as tf
+
 
 class ConvGANBase(tf.keras.Model):
     """
         This is the base class for all the Convolutional GANs. It is composed of two submodels, a generative network
-        and a discriminative network (see the paper for more info) whose architecture is defined in each subclass.
+        (generative_net) and a discriminative network (discriminative_net) whose architecture is defined in each
+        subclass.
+
+        The generative network transforms the latent variable (noise) into an image. Input shape: (batch_size,
+        latent_dim), output_shape: (batch_size, height, width, depth).
+
+        The discriminative network classifies an image in either real or fake. Input shape: (batch_size, height, width,
+        depth), output_shape: (batch_size, 1).
     """
     def __init__(self, input_shape):
         super(ConvGANBase, self).__init__()
@@ -44,10 +51,14 @@ class ConvGANBase(tf.keras.Model):
 
 
 class ConvGANSmall(ConvGANBase):
+    """
+        This class is the small version of the Convolutional GAN.
+    """
     def __init__(self, input_shape):
         super(ConvGANSmall, self).__init__(input_shape)
 
         self.latent_dim = 100
+
         self.generative_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=self.latent_dim),
@@ -90,4 +101,6 @@ class ConvGANSmall(ConvGANBase):
             ],
             name="discriminative_net"
         )
+
+
 

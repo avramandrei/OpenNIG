@@ -2,6 +2,12 @@
 # Created by https://www.gitignore.io/api/linux,python,windows,pycharm
 # Edit at https://www.gitignore.io/?templates=linux,python,windows,pycharm
 
+### My ignores ###
+configs/*
+data/*
+trained_models/*
+.idea/*
+
 ### Linux ###
 *~
 
