@@ -1,8 +1,11 @@
+"""
+    This is a script that automatizes the training process. The training process can be configured by using a yaml file.
+"""
+
 from opennng.util.trainer import train_model
 import yaml
 import argparse
 import opennng.util.yaml_parser as yaml_parser
-import os
 
 
 if __name__ == "__main__":
@@ -14,16 +17,20 @@ if __name__ == "__main__":
         try:
             config = yaml.safe_load(stream)
 
+            # parse the data information
             train_dataset, eval_dataset, processed = yaml_parser.parse_data(config)
 
+            # parse the model information
             model, train_step, loss_fcn = yaml_parser.parse_model(config)
             print("Model selected: {}\n".format(config["model"]["type"]))
             model.summary()
 
+            # parse the train information
             optimizer, iterations, batch_size, \
             save_checkpoint_steps, save_checkpoint_path, \
             generate_train_samples, num_train_samples = yaml_parser.parse_train(config)
 
+            # parse the eval information
             eval_steps, eval_batch_size = yaml_parser.parse_eval(config)
 
         except yaml.YAMLError as exc:

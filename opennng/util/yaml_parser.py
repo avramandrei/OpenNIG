@@ -1,3 +1,8 @@
+"""
+    This module is responsible for parsing the configuration file.
+"""
+
+
 from opennng.preparation.prepare import load_data
 from opennng.models.conv_vae import ConvVAESmall, ConvVAEMedium
 from opennng.models.conv_gan import ConvGANSmall
@@ -7,6 +12,15 @@ from opennng.util.train_steps import vae_train_step, gan_train_step
 
 
 def parse_data(config):
+    """
+        This function parses the data from the yaml configuration file.
+
+        Args:
+            config: The configuration file.
+
+        Returns:
+            The path to the train and evaluation data set, whether the data is processed.
+    """
     train_dataset = load_data(config["data"]["train_path"])
     eval_dataset = load_data(config["data"]["eval_path"])
 
@@ -19,6 +33,15 @@ def parse_data(config):
 
 
 def parse_model(config):
+    """
+        This function parses the model information from the yaml configuration file.
+
+        Args:
+            config: The configuration file.
+
+        Returns:
+            The model, the train step and the loss function.
+    """
     input_shape = config["model"]["input_shape"]
 
     if config["model"]["type"] == "ConvVAESmall":
@@ -43,6 +66,16 @@ def parse_model(config):
 
 
 def parse_train(config):
+    """
+        This function parses the train information from the configuration file.
+
+        Args:
+            config: The configuration file.
+
+        Returns:
+            The optimizer, the number of iterations, the batch size, the checkpoint steps, the checkpoint path,
+            the number of train samples.
+    """
     # extract learning_rate
     try:
         learning_rate = config["train"]["learning_rate"]
@@ -108,6 +141,15 @@ def parse_train(config):
 
 
 def parse_eval(config):
+    """
+        This function parses the evaluation information from the configuration file.
+
+        Args:
+            config: The configuration file.
+
+        Returns:
+            The evaluation steps, the batch size.
+    """
     try:
         batch_size = config["eval"]["batch_size"]
     except KeyError:
@@ -122,6 +164,15 @@ def parse_eval(config):
 
 
 def parse_generate(config):
+    """
+            This function parses the generate samples information from the configuration file.
+
+            Args:
+                config: The configuration file.
+
+            Returns:
+                The number of samples to generate and the path.
+        """
     try:
         num_sample = config["generate"]["num_samples"]
     except KeyError:
