@@ -2,19 +2,21 @@ import numpy as np
 import os
 
 
-def process_data(load_path, save_path):
+def process_data(load_path, save_path, normalize=True):
     """
         This function loads the mnist .npy files and process them.
 
         Args:
             load_path (str): Path of the mnist .npy raw files.
             save_path (str): Path of the mnist .npy processed files.
+            normalize (bool): Whether to normalize the data in [-1, 1] interval.
     """
     raw_train = np.load(os.path.join(load_path, "train.npy"))
     raw_eval = np.load(os.path.join(load_path, "eval.npy"))
 
-    train = raw_train / 255
-    eval = raw_eval / 255
+    if normalize:
+        train = (raw_train - 127.5) / 255
+        eval = (raw_eval - 127.5) / 255
 
     if len(train.shape) == 3:
         train = np.expand_dims(train, axis=3)

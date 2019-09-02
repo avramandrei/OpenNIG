@@ -14,7 +14,7 @@ def generate_png_samples(model, num_sample, samples_save_path):
         Args:
             model (tf.keras.Model): The model to generate images from.
             num_sample (int): Number of samples to generate.
-            samples_save_path (str): The path to save the samples at.
+            samples_save_path (s+tr): The path to save the samples at.
     """
     print("\nGenerating: {} png samples with model {}...".format(num_sample, model.name))
 
