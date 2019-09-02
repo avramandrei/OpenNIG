@@ -6,9 +6,9 @@
 
 import argparse
 from opennng.preparation.prepare import prepare_mnist, prepare_facade
-from opennng.preprocess.process import process_data
+from opennng.preprocess.process import process_mnist, process_facade
 import os
-import urllib.request
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -21,11 +21,12 @@ if __name__ == "__main__":
         processed_data_path = os.path.join("data", "mnist", "processed")
 
         prepare_mnist(raw_data_path)
-        process_data(raw_data_path, processed_data_path)
+        process_mnist(raw_data_path, processed_data_path)
 
     # download the facade dataset. It will be downloaded in two parts, raw and processed, in data/facade relative path
     if args.dataset == "facade":
         raw_data_path = os.path.join("data", "facade", "raw")
         processed_data_path = os.path.join("data", "facade", "processed")
 
-        prepare_facade(raw_data_path)
+       # prepare_facade(raw_data_path)
+        process_facade(raw_data_path, processed_data_path)

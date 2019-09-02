@@ -24,7 +24,7 @@ def _download_dataset(url, filename, name):
                 downloaded += len(data)
                 f.write(data)
                 done = int(50 * downloaded / total)
-                sys.stdout.write('\r[{}{}] {}%'.format('█' * done, '.' * (50 - done), done*2))
+                sys.stdout.write('\r[{}{}{}] {}%'.format('=' * (done-1), ">",  '.' * (50 - done), done*2))
                 sys.stdout.flush()
     sys.stdout.write('\n\n')
 
@@ -73,6 +73,8 @@ def prepare_facade(path):
     if not os.path.exists(extended_save_path):
         _download_dataset(extended_dataset_url, extended_save_path, "facade extended")
 
+    print("Working on raw data for facade dataset...")
+
     base_extract_path = os.path.join("data", "temp", "base")
     extended_extract_path = os.path.join("data", "temp", "extended")
     with ZipFile(base_save_path, 'r') as zip_ref:
@@ -110,6 +112,9 @@ def prepare_facade(path):
     assert len(X) == len(y)
 
     train_len = int(len(X) * 0.9)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     np.save(os.path.join(path, "train_X.npy"), np.asarray(X[:train_len]))
     np.save(os.path.join(path, "eval_X.npy"), np.asarray(X[train_len:]))
