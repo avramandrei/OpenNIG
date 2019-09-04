@@ -85,14 +85,15 @@ def prepare_facade(path):
     # read and add the X and y from the facade base to a list
     base_X = []
     base_y = []
+
     for filename in os.listdir(os.path.join(base_extract_path, "base")):
         if filename.endswith(".jpg"):
             img = Image.open(os.path.join(base_extract_path, "base", filename), "r")
-            base_y.append(np.asarray(img))
+            base_y.append(np.array(img))
 
         if filename.endswith(".png"):
             img = Image.open(os.path.join(base_extract_path, "base", filename), "r")
-            base_X.append(np.asarray(img))
+            base_X.append(np.array(img))
 
     # read and add the X and y from the facade extended to a list
     extended_X = []
@@ -100,11 +101,11 @@ def prepare_facade(path):
     for filename in os.listdir(os.path.join(extended_extract_path, "extended")):
         if filename.endswith(".jpg"):
             img = Image.open(os.path.join(extended_extract_path, "extended", filename), "r")
-            extended_y.append(np.asarray(img))
+            extended_y.append(np.array(img))
 
         if filename.endswith(".png"):
             img = Image.open(os.path.join(extended_extract_path, "extended", filename), "r")
-            extended_X.append(np.asarray(img))
+            extended_X.append(np.array(img))
 
     X = base_X + extended_X
     y = base_y + extended_y
@@ -116,9 +117,9 @@ def prepare_facade(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-    np.save(os.path.join(path, "train_X.npy"), np.asarray(X[:train_len]))
-    np.save(os.path.join(path, "eval_X.npy"), np.asarray(X[train_len:]))
-    np.save(os.path.join(path, "train_y.npy"), np.asarray(y[:train_len]))
-    np.save(os.path.join(path, "eval_y.npy"), np.asarray(y[train_len:]))
+    np.save(os.path.join(path, "train_X.npy"), np.array(X[:train_len]))
+    np.save(os.path.join(path, "eval_X.npy"), np.array(X[train_len:]))
+    np.save(os.path.join(path, "train_y.npy"), np.array(y[:train_len]))
+    np.save(os.path.join(path, "eval_y.npy"), np.array(y[train_len:]))
 
     shutil.rmtree(os.path.join("data", "temp"), )

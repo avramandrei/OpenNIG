@@ -28,5 +28,5 @@ if __name__ == "__main__":
         raw_data_path = os.path.join("data", "facade", "raw")
         processed_data_path = os.path.join("data", "facade", "processed")
 
-       # prepare_facade(raw_data_path)
+        prepare_facade(raw_data_path)
         process_facade(raw_data_path, processed_data_path)

@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from opennng.preprocess.util import padd_images
 
 
 def process_mnist(raw_data_path, processed_data_path, normalize=True):
@@ -41,23 +42,26 @@ def process_facade(raw_data_path, processed_data_path, normalize=True):
     """
     print("Working on processed raw data for facade dataset...")
 
-    #train_X = np.load(os.path.join(raw_data_path, "train_X.npy"))
-   # train_y = np.load(os.path.join(raw_data_path, "train_y.npy"))
-    eval_X = np.load(os.path.join(raw_data_path, "eval_X.npy"))
-    #eval_y = np.load(os.path.join(raw_data_path, "eval_y.npy"))
+    train_X = np.load(os.path.join(raw_data_path, "train_X.npy"), allow_pickle=True)
+    train_y = np.load(os.path.join(raw_data_path, "train_y.npy"), allow_pickle=True)
+    eval_X = np.load(os.path.join(raw_data_path, "eval_X.npy"), allow_pickle=True)
+    eval_y = np.load(os.path.join(raw_data_path, "eval_y.npy"), allow_pickle=True)
 
     if normalize:
-       # train_X = (train_X - 127.5) / 255
-       # train_y = (train_y - 127.5) / 255
-        eval_X = np.divide(eval_X, 255)
-        #eval_y = (eval_y - 127.5) / 255
+        train_X = (train_X - 127.5) / 255
+        train_y = (train_y - 127.5) / 255
+        eval_X = (eval_X - 127.5) / 255
+        eval_y = (eval_y - 127.5) / 255
+
+    train_X = padd_images(train_X, 1024, 1024)
+    train_y = padd_images(train_y, 1024, 1024)
+    eval_X = padd_images(eval_X, 1024, 1024)
+    eval_y = padd_images(eval_y, 1024, 1024)
 
     if not os.path.exists(processed_data_path):
         os.makedirs(processed_data_path)
 
-    print(eval_X.shape)
-
-   # np.save(os.path.join(processed_data_path, "train_X.npy"), np.float32(train_X))
-  #  np.save(os.path.join(processed_data_path, "train_y.npy"), np.float32(train_y))
-    np.save(os.path.join(processed_data_path, "eval_X.npy"), np.float32(eval_X))
-   # np.save(os.path.join(processed_data_path, "eval_y.npy"), np.float32(eval_y))
+    np.save(os.path.join(processed_data_path, "train_X.npy"), train_X)
+    np.save(os.path.join(processed_data_path, "train_y.npy"), train_y)
+    np.save(os.path.join(processed_data_path, "eval_X.npy"), eval_X)
+    np.save(os.path.join(processed_data_path, "eval_y.npy"), eval_y)
