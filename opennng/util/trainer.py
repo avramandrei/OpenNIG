@@ -5,7 +5,7 @@ from opennng.util.generator import generate_gif_train_samples
 
 
 def train_model(model, train_step, loss_fcn,
-                train_dataset, eval_dataset, processed,
+                train_dataset, eval_dataset,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
                 eval_batch_size, eval_steps,
                 generate_train_samples, num_train_samples):
@@ -19,8 +19,6 @@ def train_model(model, train_step, loss_fcn,
             loss_fcn: The loss function used by the model.
             train_dataset (tf.data.Dataset): The dataset used for training the model.
             eval_dataset (tf.data.Dataset): The dataset used for evaluating the model.
-            processed (bool): Whether the data has been processed or not. If it has not, the default preprocess function
-                will be applied to all dataset.
             optimizer: The optimizer used for train the model.
             iterations (int): The number of iterations that the model will be trained on.
             batch_size (int): The batch size of the training process.

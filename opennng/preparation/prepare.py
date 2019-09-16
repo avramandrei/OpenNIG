@@ -6,9 +6,10 @@ import sys
 import requests
 from PIL import Image
 import shutil
+import tarfile
 
 
-def _download_dataset(url, filename, name):
+def download_dataset(url, filename, name):
     print("Downloading dataset `{}`.".format(name))
 
     with open(filename, 'wb') as f:
@@ -40,17 +41,40 @@ def load_data(path):
     return dataset
 
 
-def prepare_mnist(path):
+def prepare_mnist():
     """
         This function loads the mnist dataset (train and test) and saves it at a given path.
     """
-    (train, _), (test, _) = tf.keras.datasets.mnist.load_data()
+    url = "https://github.com/myleott/mnist_png/raw/master/mnist_png.tar.gz"
+    temp_path = os.path.join("data", "temp")
+    data_path = os.path.join("data", "mnist", "raw")
+    temp_data_path = os.path.join(temp_path, "mnist.tar.gz")
 
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not os.path.exists(temp_path):
+        os.makedirs(temp_path)
 
-    np.save(os.path.join(path, "train.npy"), train)
-    np.save(os.path.join(path, "eval.npy"), test)
+    if not os.path.exists(data_path):
+        os.makedirs(os.path.join(data_path, "train"))
+        os.makedirs(os.path.join(data_path, "valid"))
+
+    if not os.path.exists(temp_data_path):
+        download_dataset(url, temp_data_path, "mnist")
+
+    print("Extracting mnist data...")
+    #with tarfile.open(temp_data_path, "r:gz") as tar:
+        #tar.extractall(temp_path)
+
+    for digit_dir in os.listdir(os.path.join(temp_path, "mnist_png", "training")):
+        for image in os.listdir(os.path.join(temp_path, "mnist_png", "training", digit_dir)):
+            shutil.copy(os.path.join(temp_path, "mnist_png", "training", digit_dir, image),
+                        os.path.join(data_path, "train", image))
+
+    for digit_dir in os.listdir(os.path.join(temp_path, "mnist_png", "testing")):
+        for image in os.listdir(os.path.join(temp_path, "mnist_png", "testing", digit_dir)):
+            shutil.copy(os.path.join(temp_path, "mnist_png", "testing", digit_dir, image),
+                        os.path.join(data_path, "valid", image))
+
+    shutil.rmtree(temp_path)
 
 
 def prepare_facade(path):
@@ -58,42 +82,43 @@ def prepare_facade(path):
         This function loads the facade dataset (train and test) and saves it at a given path.
     """
 
-    base_dataset_url = "http://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_base.zip"
-    extended_dataset_url = "http://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_extended.zip"
+    base_url = "http://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_base.zip"
+    extended_url = "http://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_extended.zip"
 
-    base_save_path = os.path.join("data", "temp", "base.zip")
-    extended_save_path = os.path.join("data", "temp", "extended.zip")
+    base_temp_save_path = os.path.join("data", "temp", "base.zip")
+    extended_temp_save_path = os.path.join("data", "temp", "extended.zip")
 
     if not os.path.exists(os.path.join("data", "temp")):
         os.makedirs(os.path.join("data", "temp"))
 
-    if not os.path.exists(base_save_path):
-        _download_dataset(base_dataset_url, base_save_path, "facade base")
+    download_dataset(base_url, base_temp_save_path, "facade base")
 
-    if not os.path.exists(extended_save_path):
-        _download_dataset(extended_dataset_url, extended_save_path, "facade extended")
+    download_dataset(extended_url, extended_temp_save_path, "facade extended")
 
     print("Working on raw data for facade dataset...")
 
     base_extract_path = os.path.join("data", "temp", "base")
     extended_extract_path = os.path.join("data", "temp", "extended")
-    with ZipFile(base_save_path, 'r') as zip_ref:
+    with ZipFile(base_temp_save_path, 'r') as zip_ref:
         zip_ref.extractall(base_extract_path)
-    with ZipFile(extended_save_path, 'r') as zip_ref:
+    with ZipFile(extended_temp_save_path, 'r') as zip_ref:
         zip_ref.extractall(extended_extract_path)
 
     # read and add the X and y from the facade base to a list
     base_X = []
     base_y = []
 
+    img_height = 256
+    img_width = 256
+
     for filename in os.listdir(os.path.join(base_extract_path, "base")):
         if filename.endswith(".jpg"):
             img = Image.open(os.path.join(base_extract_path, "base", filename), "r")
-            base_y.append(np.array(img))
+            base_y.append(np.array(img.resize((img_height, img_width))))
 
         if filename.endswith(".png"):
             img = Image.open(os.path.join(base_extract_path, "base", filename), "r")
-            base_X.append(np.array(img))
+            base_X.append(np.array(img.resize((img_height, img_width))))
 
     # read and add the X and y from the facade extended to a list
     extended_X = []
@@ -101,11 +126,12 @@ def prepare_facade(path):
     for filename in os.listdir(os.path.join(extended_extract_path, "extended")):
         if filename.endswith(".jpg"):
             img = Image.open(os.path.join(extended_extract_path, "extended", filename), "r")
-            extended_y.append(np.array(img))
+            img.resize((img_height, img_width))
+            extended_y.append(np.array(img.resize((img_height, img_width))))
 
         if filename.endswith(".png"):
             img = Image.open(os.path.join(extended_extract_path, "extended", filename), "r")
-            extended_X.append(np.array(img))
+            extended_X.append(np.array(img.resize((img_height, img_width))))
 
     X = base_X + extended_X
     y = base_y + extended_y

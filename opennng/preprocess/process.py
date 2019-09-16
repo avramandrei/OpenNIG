@@ -40,12 +40,12 @@ def process_facade(raw_data_path, processed_data_path, normalize=True):
             save_path (str): Path of the facade .npy processed files.
             normalize (bool): Whether to normalize the data in [-1, 1] interval.
     """
-    print("Working on processed raw data for facade dataset...")
+    print("Working on processed data for facade dataset...")
 
-    train_X = np.load(os.path.join(raw_data_path, "train_X.npy"), allow_pickle=True)
-    train_y = np.load(os.path.join(raw_data_path, "train_y.npy"), allow_pickle=True)
-    eval_X = np.load(os.path.join(raw_data_path, "eval_X.npy"), allow_pickle=True)
-    eval_y = np.load(os.path.join(raw_data_path, "eval_y.npy"), allow_pickle=True)
+    train_X = np.load(os.path.join(raw_data_path, "train_X.npy"))
+    train_y = np.load(os.path.join(raw_data_path, "train_y.npy"))
+    eval_X = np.load(os.path.join(raw_data_path, "eval_X.npy"))
+    eval_y = np.load(os.path.join(raw_data_path, "eval_y.npy"))
 
     if normalize:
         train_X = (train_X - 127.5) / 255
@@ -53,10 +53,10 @@ def process_facade(raw_data_path, processed_data_path, normalize=True):
         eval_X = (eval_X - 127.5) / 255
         eval_y = (eval_y - 127.5) / 255
 
-    train_X = padd_images(train_X, 1024, 1024)
-    train_y = padd_images(train_y, 1024, 1024)
-    eval_X = padd_images(eval_X, 1024, 1024)
-    eval_y = padd_images(eval_y, 1024, 1024)
+  #  train_X = padd_images(train_X, 1024, 1024)
+   # train_y = padd_images(train_y, 1024, 1024)
+  #  eval_X = padd_images(eval_X, 1024, 1024)
+  #  eval_y = padd_images(eval_y, 1024, 1024)
 
     if not os.path.exists(processed_data_path):
         os.makedirs(processed_data_path)

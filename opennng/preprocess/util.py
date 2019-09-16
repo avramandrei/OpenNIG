@@ -9,8 +9,8 @@ def padd_images(images, max_height, max_width):
         width_pad = max_width - image.shape[1]
 
         padded_image = np.pad(image,
-                              ((height_pad - height_pad/2, height_pad/2),
-                               (width_pad - width_pad/2, width_pad/2)))
+                              ((int(height_pad - height_pad/2), int(height_pad/2)),
+                               (int(width_pad - width_pad/2), int(width_pad/2))))
 
         padded_images[i] = padded_image
 

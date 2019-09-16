@@ -17,11 +17,7 @@ if __name__ == "__main__":
 
     # download the mnist dataset. It will be downloaded in two parts, raw and processed, in data/mnist relative path
     if args.dataset == "mnist":
-        raw_data_path = os.path.join("data", "mnist", "raw")
-        processed_data_path = os.path.join("data", "mnist", "processed")
-
-        prepare_mnist(raw_data_path)
-        process_mnist(raw_data_path, processed_data_path)
+        prepare_mnist()
 
     # download the facade dataset. It will be downloaded in two parts, raw and processed, in data/facade relative path
     if args.dataset == "facade":
@@ -29,4 +25,3 @@ if __name__ == "__main__":
         processed_data_path = os.path.join("data", "facade", "processed")
 
         prepare_facade(raw_data_path)
-        process_facade(raw_data_path, processed_data_path)
