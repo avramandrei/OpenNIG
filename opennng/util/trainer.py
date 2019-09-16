@@ -5,9 +5,9 @@ from opennng.util.generator import generate_gif_train_samples
 
 
 def train_model(model, train_step, loss_fcn,
-                train_dataset, eval_dataset,
+                X_train, X_valid, y_train, y_valid,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
-                eval_batch_size, eval_steps,
+                valid_batch_size, valid_steps,
                 generate_train_samples, num_train_samples):
 
     """
@@ -24,17 +24,14 @@ def train_model(model, train_step, loss_fcn,
             batch_size (int): The batch size of the training process.
             save_checkpoint_steps (int): A checkpoint will be generated every this many steps.
             save_checkpoint_path (str): The checkpoint path.
-            eval_batch_size (int): The batch size of the evaluation process.
-            eval_steps (int): An evaluation of the model will be performed every this many steps.
+            valid_batch_size (int): The batch size of the evaluation process.
+            valid_steps (int): An evaluation of the model will be performed every this many steps.
             generate_train_samples (bool): Whether to generate gif samples during the training process.
             num_train_samples (int): The number of samples to generate during the training process.
     """
-    # process the data if it has not already been processed
-    if not processed:
-        pass
 
-    train_dataset = train_dataset.batch(batch_size).repeat()
-    eval_dataset = eval_dataset.batch(eval_batch_size).repeat(1)
+    train_dataset = y_train.batch(batch_size).repeat()
+    eval_dataset = y_valid.batch(valid_batch_size).repeat(1)
 
     # generate a noise (latent sample) from where train samples will be created
     if generate_train_samples:
@@ -61,7 +58,7 @@ def train_model(model, train_step, loss_fcn,
                                            noise, os.path.join(save_checkpoint_path, "train_samples"))
 
         # if the current step is an evaluation step, evaluate the model
-        if iter % eval_steps == 0:
+        if iter % valid_steps == 0:
             loss_mean = tf.keras.metrics.Mean()
             for eval_batch in eval_dataset:
                 loss_mean(loss_fcn(model, eval_batch))
