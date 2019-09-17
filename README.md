@@ -93,7 +93,7 @@ python3 train.py [--model]
 | --generate_train_samples | bool | Whether to generate samples during training. Default: `True`. |
 | --num_train_samples | int | Number of generated training samples. Default: `10`. |
 
-### Examples of generated GIF's during training
+### Examples of automatically generated GIF's during training
 
 | Model | Samples |
 | --- | --- |
