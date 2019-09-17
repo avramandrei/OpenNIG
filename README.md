@@ -39,6 +39,14 @@ OpenNNG requires:
  - TensorFlow >= 2.0.0rc0
  - Pillow >=6.1
  
+### Data downloading
+
+OpenNNG offers a veriety of databases that can be downloaded with the `download.py` script. Click [here]() to see the available databases.
+
+```
+python3 download [database]
+```
+ 
 ### Data processing
 
 Data must be saved in Numpy `.npy` files. In this example we will use the mnist dataset to generate new images. For this purpose, use 
