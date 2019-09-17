@@ -56,7 +56,7 @@ python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--norma
 ```
 
 |  Named Argument | Type | Description |
-| ---------------- | --- | -- |
+| -------------------- | --- | -- |
 | raw_data_path | str | Path to the raw data. Two(train, valid)/four(train_X, valid_X, train_y, valid_y) folders are expected here. |
 | processed_data_path | str | Path where processed data will be saved |
 | --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. Default: `True`. |
@@ -75,7 +75,7 @@ python3 train.py [--model]
                  [--generate_train_samples] [--num_train_samples]
 ```
 
-|   Named Argument   | Type | Description |
+|  Named Argument | Type | Description |
 | --- | --- | -- |
 | --model | str | Type of the model. [Here]() is a list of all the available models.
 | --train_X_path | str | Path to the X train data, saved as a `.npy` file. |
