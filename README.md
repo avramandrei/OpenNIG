@@ -55,26 +55,44 @@ Processed data must be saved in Numpy `.npy` files. Data can be automatically pr
 python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--normalize]
 ```
 
-| Named Argument | Type | Description |
-| --- | --- | -- |
+|  Named Argument | Type | Description |
+| ---------------- | --- | -- |
 | raw_data_path | str | Path to the raw data. Two(train, valid)/four(train_X, valid_X, train_y, valid_y) folders are expected here. |
 | processed_data_path | str | Path where processed data will be saved |
-| --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. |
-| --normalize | bool | Whether to normalize the data. |
-
-### Configuration
-
-To train and generate new samples, a `YAML` configuration file must be provided. [Here](https://github.com/avramandrei/OpenNNG/blob/master/examples/yaml_config/config_docs.yml) is an exhaustive list of all the configuration parameters.
+| --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. Default: `True`. |
+| --normalize | bool | Whether to normalize the data. Default: `True`. |
 
 ### Train
 
-To train, run `train.py` with a `YAML` configuration file as parameter.
+To train, run the `train.py` script. This script automatically generates 10 samples that shows how the training process evolves at evrey checkpoint.
 
 ```
-python3 train.py <path_to_yaml_config_file>
+python3 train.py [--model] 
+                 [--train_X_path] [--valid_X_path] [--train_y_path] [--valid_y_path] [--from_noise] 
+                 [--optimizer] [--learning_rate] [--iterations] [--batch_size] 
+                 [--save_checkpoint_steps] [--save_checkpoint_path]
+                 [--valid_batch_size] [--valid_steps] 
+                 [--generate_train_samples] [--num_train_samples]
 ```
 
-This script will automatically generate 10 samples that shows how the training process evolves at evrey checkpoint. To disable this functionality, set `generate_train_samples` to `False` in `YAML` configuration file. 
+|   Named Argument   | Type | Description |
+| --- | --- | -- |
+| --model | str | Type of the model. [Here]() is a list of all the available models.
+| --train_X_path | str | Path to the X train data, saved as a `.npy` file. |
+| --valid_X_path | str | Path to the X validation data, saved as a `.npy` file. |
+| --train_y_path | str | Path to the y train data, saved as a `.npy` file. |
+| --valid_y_path | str | Path to the y validation data, saved as a `.npy` file. |
+| --optimizer | str | Name of the optimizer, as described in https://keras.io/optimizers/. Default value: `"Adam"` |
+| --learning_rate | float | Learning rate of the optimizer. Default: `0.001`. |
+| --iterations | int | Number of training steps. Default: `100000`. |
+| --batch_size | int | Batch size for training. Defaul: `32`. |
+| --save_checkpoint_steps | int | Save a checkpoint every X steps. Default: `1000` |
+| --save_checkpoint_path | str | Save the model at this path every `--save_checkpoint_steps`. Default: `trained_model/model` |
+| --valid_batch_size | int | Batch size for validation. Defaul: `32`. |
+| --valid_steps | int | Perfom validation every X steps. Default: `250`. |
+| --generate_train_samples | bool | Whether to generate samples during training. Default: `True`. |
+| --num_train_samples | int | Number of generated training samples. Default: `10`. |
+
 
 | Model | Samples |
 | --- | --- |
