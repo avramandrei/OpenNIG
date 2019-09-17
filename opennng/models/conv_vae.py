@@ -26,7 +26,8 @@ class ConvVAEBase(tf.keras.Model):
     def __init__(self, input_shape):
         super(ConvVAEBase, self).__init__()
 
-        self.build(input_shape)
+        if input_shape is not None:
+            self.build(input_shape)
 
     @tf.function
     def generate(self, noise=None):

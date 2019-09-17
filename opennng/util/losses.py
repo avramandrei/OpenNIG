@@ -29,7 +29,7 @@ def vae_loss_fcn(model, x):
     z = model.reparameterize(mean, logvar)
     x_logit = model.decode(z)
 
-    cross_ent = tf.nn.sigmoid_binary_cross_entropy_with_logits(logits=x_logit, labels=x)
+    cross_ent = tf.nn.sigmoid_cross_entropy_with_logits(logits=x_logit, labels=x)
 
     # calculate log p(x|z)
     logpx_z = -tf.reduce_sum(cross_ent, axis=[1, 2, 3])

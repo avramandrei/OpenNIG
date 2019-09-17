@@ -61,8 +61,8 @@ def prepare_mnist():
         download_dataset(url, temp_data_path, "mnist")
 
     print("Extracting mnist data...")
-    #with tarfile.open(temp_data_path, "r:gz") as tar:
-        #tar.extractall(temp_path)
+    with tarfile.open(temp_data_path, "r:gz") as tar:
+        tar.extractall(temp_path)
 
     for digit_dir in os.listdir(os.path.join(temp_path, "mnist_png", "training")):
         for image in os.listdir(os.path.join(temp_path, "mnist_png", "training", digit_dir)):

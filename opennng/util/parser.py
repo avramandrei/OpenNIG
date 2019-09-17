@@ -2,8 +2,9 @@ import numpy as np
 import tensorflow as tf
 from opennng.models.conv_gan import ConvGANSmall
 from opennng.models.conv_vae import ConvVAESmall
-from opennng.util.losses import gan_loss_fcn, vae_loss_fcn
-from opennng.util.train_steps import gan_train_step, vae_train_step
+from opennng.util.trainer import conv_vae_trainer, conv_gan_trainer
+import pickle
+import os
 
 
 def parse_data(args):
@@ -21,19 +22,33 @@ def parse_data(args):
 
 
 def parse_model(args):
-    if args.from_noise:
+    try:
         input_shape = np.load(args.valid_y_path).shape[1:]
+    except AttributeError:
+        with open(os.path.join(os.path.dirname(args.model_path), "model.meta"), "rb") as model_meta:
+            input_shape = pickle.load(model_meta)
 
     if args.model == "ConvVAESmall":
         model = ConvVAESmall(input_shape)
-        train_step = vae_train_step
-        loss_fcn = vae_loss_fcn
+        trainer = conv_vae_trainer
+    if args.model == "ConvGANSmall":
+        model = ConvGANSmall(input_shape)
+        trainer = conv_gan_trainer
 
-    return model, train_step, loss_fcn
+    try:
+        model.load_weights(args.model_path)
+    except AttributeError:
+        pass
+
+    return model, trainer
 
 
 def parse_train(args):
-    if args.optimizer == "Adam":
+    if args.optimizer == "Adam" and args.model == "ConvGANSmall":
+        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
+        disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
+        optimizer = (gen_optimizer, disc_optimizer)
+    else:
         optimizer = tf.keras.optimizers.Adam(args.learning_rate)
 
     iterations = args.iterations
@@ -57,3 +72,9 @@ def parse_generate_samples(args):
 
     return generate_train_samples, num_train_samples
 
+
+def parse_generate(args):
+    num_sample = args.num_sample
+    sample_save_path = args.sample_save_path
+
+    return num_sample, sample_save_path

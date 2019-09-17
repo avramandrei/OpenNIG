@@ -6,7 +6,6 @@
 
 import argparse
 from opennng.preparation.prepare import prepare_mnist, prepare_facade
-from opennng.preprocess.process import process_mnist, process_facade
 import os
 
 

@@ -5,34 +5,20 @@
 
 
 from opennng.util.generator import generate_png_samples
-import yaml
 import argparse
-import opennng.util.yaml_parser as yaml_parser
-
-import os
+from opennng.util.parser import parse_model, parse_generate
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("config_path", type=str)
+    parser.add_argument("model", type=str)
+    parser.add_argument("model_path", type=str)
+    parser.add_argument("--num_sample", type=int, default=10)
+    parser.add_argument("--sample_save_path", type=str, default="samples")
+
     args = parser.parse_args()
 
-    with open(args.config_path, "r") as stream:
-        try:
-            config = yaml.safe_load(stream)
-
-            # parse the model information
-            model, _, _= yaml_parser.parse_model(config)
-            print("Model selected: {}\n".format(config["model"]["type"]))
-            model.summary()
-
-            # parse the sample generation information
-            num_sample, sample_save_path = yaml_parser.parse_generate(config)
-            if not os.path.exists(sample_save_path):
-                os.makedirs(sample_save_path)
-
-        except yaml.YAMLError as exc:
-            print(exc)
-            exit(0)
+    model, _ = parse_model(args)
+    num_sample, sample_save_path = parse_generate(args)
 
     generate_png_samples(model, num_sample, sample_save_path)

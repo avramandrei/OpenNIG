@@ -22,10 +22,10 @@ class ConvGANBase(tf.keras.Model):
         The discriminative network classifies an image in either real or fake. Input shape: (batch_size, height, width,
         depth), output_shape: (batch_size, 1).
     """
-    def __init__(self, input_shape):
+    def __init__(self):
         super(ConvGANBase, self).__init__()
 
-        self.build(input_shape)
+        self.build()
 
     def generate(self, noise=None):
         """

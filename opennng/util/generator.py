@@ -18,6 +18,9 @@ def generate_png_samples(model, num_sample, samples_save_path):
     """
     print("\nGenerating: {} png samples with model {}...".format(num_sample, model.name))
 
+    if not os.path.exists(samples_save_path):
+        os.makedirs(samples_save_path)
+
     # for each latent sample, generate a new image and save it to the given path
     for i in range(num_sample):
         sample = np.squeeze(model.generate()) * 255

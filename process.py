@@ -33,9 +33,9 @@ if __name__ == "__main__":
         maximum = np.amax(np.concatenate((train_y, valid_y), axis=0))
 
         if args.normalize:
-            print("Normalizing data values to [-1, 1]...")
-            train_y = (train_y - (maximum/2)) / maximum
-            valid_y = (valid_y - (maximum / 2)) / maximum
+            print("Normalizing data values to [0, 1]...")
+            train_y = train_y / maximum
+            valid_y = valid_y / maximum
 
         assert len(train_y.shape) == len(valid_y.shape)
 
