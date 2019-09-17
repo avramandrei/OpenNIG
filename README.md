@@ -44,17 +44,23 @@ OpenNNG requires:
 OpenNNG offers a veriety of databases that can be downloaded with the `download.py` script. [Here]() is a list of the available databases.
 
 ```
-python3 download [database]
+python3 download.py [database]
 ```
  
 ### Data processing
 
-Data must be saved in Numpy `.npy` files. In this example we will use the mnist dataset to generate new images. For this purpose, use 
-the `download.py` script with `mnist` as argument. This command will automatically download mnist (raw and processed) dataset in `data/` directory.
+Processed data must be saved in Numpy `.npy` files. Data can be automatically processed using the `process.py` script. 
 
 ```
-python3 download.py mnist
+python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--normalize]
 ```
+
+| Named Argument | Type | Description |
+| --- | --- | -- |
+| raw_data_path | str | Path to the raw data. Two(train, valid)/four(train_X, valid_X, train_y, valid_y) folders are expected here. |
+| processed_data_path | str | Path where processed data will be saved |
+| --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. |
+| --normalize | bool | Whether to normalize the data. |
 
 ### Configuration
 
