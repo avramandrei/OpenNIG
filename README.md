@@ -41,7 +41,7 @@ OpenNNG requires:
  
 ### Data downloading
 
-OpenNNG offers a veriety of databases that can be downloaded with the `download.py` script. Click [here]() to see the available databases.
+OpenNNG offers a veriety of databases that can be downloaded with the `download.py` script. [Here]() is a list of the available databases.
 
 ```
 python3 download [database]
