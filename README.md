@@ -17,7 +17,7 @@ OpenNNG focuses on modularity to support advanced modeling and training capabili
 
 ### Clone repository
 
-If you want to use OpenNNG as a command line interface where the processes of training, evaluating etc. are all automated, run the following commands:
+If you want to use OpenNNG as a command line interface:
 
 ```
 git clone https://github.com/avramandrei/OpenNNG.git
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 ### pip
 
-If you want to use OpenNNG as an API and have more flexibility, install it via pip:
+If you want to use OpenNNG as an API:
 
 ```
 pip install opennng
@@ -77,7 +77,7 @@ python3 train.py [--model]
 
 |  Named Argument | Type | Description |
 | --- | --- | -- |
-| --model | str | Type of the model. [Here]() is a list of all the available models.
+| --model | str | Type of the model. [Here]() is a list of all the available models. |
 | --train_X_path | str | Path to the X train data, saved as a `.npy` file. |
 | --valid_X_path | str | Path to the X validation data, saved as a `.npy` file. |
 | --train_y_path | str | Path to the y train data, saved as a `.npy` file. |
@@ -103,9 +103,18 @@ python3 train.py [--model]
 
 ### Generate
 
-To generate a new sample, run `generate.py` with a `YAML` configuration file as parameter.
+To generate a new sample, run `generate.py`.
 
 ```
-python3 generate.py <path_to_yaml_config_file>
+python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path]
 ```
+
+|  Named Argument | Type | Description |
+| --- | --- | -- |
+| model | str | Type of the model. [Here]() is a list of all the available models. |
+| model_path | str | Load the model from this path. |
+| --num_sample | int | Number of samples to generate.Default: `10`. |
+| --sample_save_path | str | Save the samples at this path. Default: `samples`. |
+
+
 
