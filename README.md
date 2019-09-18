@@ -17,7 +17,7 @@ OpenNNG focuses on modularity to support advanced modeling and training capabili
 
 ### Clone repository
 
-If you want to use OpenNNG as a command line interface where the processes of training, evaluating etc. are all automated, run the following commands:
+If you want to use OpenNNG as a command line interface:
 
 ```
 git clone https://github.com/avramandrei/OpenNNG.git
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 ### pip
 
-If you want to use OpenNNG as an API and have more flexibility, install it via pip:
+If you want to use OpenNNG as an API:
 
 ```
 pip install opennng
