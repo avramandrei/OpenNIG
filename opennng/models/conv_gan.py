@@ -59,8 +59,15 @@ class ConvGANSmall(ConvGANBase):
 
         self.latent_dim = 100
 
-        gen_input_height = int(input_shape[0] / 4)
-        gen_input_width = int(input_shape[1] / 4)
+        if input_shape[0] % 4 == 0:
+            gen_input_height = int(input_shape[0]/4)
+        else:
+            raise ValueError("First dimension of the input data must be divisible by 4")
+
+        if input_shape[1] % 4 == 0:
+            gen_input_width = int(input_shape[1] / 4)
+        else:
+            raise ValueError("Second dimension of the input data must be divisible by 4")
 
         self.generative_net = tf.keras.Sequential(
             [
@@ -68,21 +75,19 @@ class ConvGANSmall(ConvGANBase):
 
                 tf.keras.layers.Dense(gen_input_height * gen_input_width * 256),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.ReLU(),
+                tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Reshape((gen_input_height, gen_input_width, 256)),
 
-                tf.keras.layers.Conv2DTranspose(
-                    filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.ReLU(),
+                tf.keras.layers.LeakyReLU(0.02),
 
-                tf.keras.layers.Conv2DTranspose(
-                    filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.ReLU(),
+                tf.keras.layers.LeakyReLU(0.02),
 
-                tf.keras.layers.Conv2DTranspose(
-                    filters=input_shape[2], kernel_size=3, strides=(1, 1), padding="SAME", activation="sigmoid")
+                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1),
+                                                padding="SAME", activation="sigmoid")
             ],
             name="generative_net"
         )
@@ -92,15 +97,87 @@ class ConvGANSmall(ConvGANBase):
                 tf.keras.layers.InputLayer(input_shape=input_shape),
 
                 tf.keras.layers.Conv2D(64, kernel_size=3, strides=(1, 1), padding="SAME"),
-                tf.keras.layers.ReLU(),
+                tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Dropout(0.3),
 
                 tf.keras.layers.Conv2D(32, kernel_size=3, strides=(1, 1), padding="SAME"),
-                tf.keras.layers.ReLU(),
+                tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Dropout(0.3),
 
                 tf.keras.layers.Flatten(),
                 tf.keras.layers.Dense(1)
+            ],
+            name="discriminative_net"
+        )
+
+
+class ConvGANMedium(ConvGANBase):
+    """
+        This class is the medium version of the Convolutional GAN.
+    """
+    def __init__(self, input_shape):
+        super(ConvGANMedium, self).__init__(input_shape)
+
+        self.latent_dim = 100
+
+        if input_shape[0] % 8 == 0:
+            gen_input_height = int(input_shape[0]/8)
+        else:
+            raise ValueError("First dimension of the input data must be divisible by 8")
+
+        if input_shape[1] % 8 == 0:
+            gen_input_width = int(input_shape[1] / 8)
+        else:
+            raise ValueError("Second dimension of the input data must be divisible by 8")
+        self.generative_net = tf.keras.Sequential(
+            [
+                tf.keras.layers.InputLayer(input_shape=self.latent_dim),
+
+                tf.keras.layers.Dense(gen_input_height * gen_input_width * 256),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.Reshape((gen_input_height, gen_input_width, 256)),
+
+                tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.LeakyReLU(0.02),
+
+                tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.LeakyReLU(0.02),
+
+                tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.LeakyReLU(0.02),
+
+                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1),
+                                                padding="SAME", activation="sigmoid")
+            ],
+            name="generative_net"
+        )
+
+        self.discriminative_net = tf.keras.Sequential(
+            [
+                tf.keras.layers.InputLayer(input_shape=input_shape),
+
+                tf.keras.layers.Conv2D(128, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.Dropout(0.3),
+
+                tf.keras.layers.Conv2D(64, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.Dropout(0.3),
+
+                tf.keras.layers.Conv2D(32, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.Dropout(0.3),
+
+                tf.keras.layers.Flatten(),
+                tf.keras.layers.Dense(150),
+                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.Dropout(0.3),
+
+                tf.keras.layers.Dense(1),
             ],
             name="discriminative_net"
         )

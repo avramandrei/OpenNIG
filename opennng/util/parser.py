@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from opennng.models.conv_gan import ConvGANSmall
+from opennng.models.conv_gan import ConvGANSmall, ConvGANMedium
 from opennng.models.conv_vae import ConvVAESmall, ConvVAEMedium
 from opennng.util.trainer import conv_vae_trainer, conv_gan_trainer
 import pickle
@@ -31,12 +31,16 @@ def parse_model(args):
     if args.model == "ConvVAESmall":
         model = ConvVAESmall(input_shape)
         trainer = conv_vae_trainer
-    if args.model == "ConvGANSmall":
-        model = ConvGANSmall(input_shape)
-        trainer = conv_gan_trainer
     if args.model == "ConvVAEMedium":
         model = ConvVAEMedium(input_shape)
         trainer = conv_vae_trainer
+
+    if args.model == "ConvGANSmall":
+        model = ConvGANSmall(input_shape)
+        trainer = conv_gan_trainer
+    if args.model == "ConvGANMedium":
+        model = ConvGANMedium(input_shape)
+        trainer = conv_gan_trainer
 
     try:
         model.load_weights(args.model_path)
@@ -47,7 +51,7 @@ def parse_model(args):
 
 
 def parse_train(args):
-    if args.optimizer == "Adam" and args.model == "ConvGANSmall":
+    if args.optimizer == "Adam" and "GAN" in args.model:
         gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         optimizer = (gen_optimizer, disc_optimizer)
