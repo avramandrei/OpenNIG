@@ -25,7 +25,7 @@ cd OpenNNG/
 pip install -r requirements.txt
 ```
 
-### pip
+### pip (not finished yet)
 
 If you want to use OpenNNG as an API:
 
