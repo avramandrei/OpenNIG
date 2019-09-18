@@ -165,7 +165,7 @@ class ConvVAEMedium(ConvVAEBase):
     def __init__(self, input_shape):
         super(ConvVAEMedium, self).__init__(input_shape)
 
-        self.latent_dim = 100
+        self.latent_dim = 150
         self.inference_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
