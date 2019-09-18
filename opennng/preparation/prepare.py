@@ -1,66 +1,21 @@
 import numpy as np
-import tensorflow as tf
 import os
 from zipfile import ZipFile
-import sys
-import requests
 from PIL import Image
 import shutil
 import tarfile
-
-
-def download_dataset(url, filename, name):
-    print("Downloading dataset `{}`.".format(name))
-
-    with open(filename, 'wb') as f:
-        response = requests.get(url, stream=True)
-        total = response.headers.get('content-length')
-
-        if total is None:
-            f.write(response.content)
-        else:
-            downloaded = 0
-            total = int(total)
-            for data in response.iter_content(chunk_size=max(int(total / 1000), 1024 * 1024)):
-                downloaded += len(data)
-                f.write(data)
-                done = int(50 * downloaded / total)
-                sys.stdout.write('\r[{}{}{}] {}%'.format('=' * (done-1), ">",  '.' * (50 - done), done*2))
-                sys.stdout.flush()
-    sys.stdout.write('\n\n')
-
-
-def load_data(path):
-    """
-        This function loads a .npy file from a path, creates and returns a Dataset.
-    """
-    data = np.load(path)
-
-    dataset = tf.data.Dataset.from_tensor_slices(data)
-
-    return dataset
+from opennng.preparation.util import download_dataset, make_dirs
 
 
 def prepare_mnist():
     """
         This function loads the mnist dataset (train and test) and saves it at a given path.
     """
-    url = "https://github.com/myleott/mnist_png/raw/master/mnist_png.tar.gz"
-    temp_path = os.path.join("data", "temp")
-    data_path = os.path.join("data", "mnist", "raw")
-    temp_data_path = os.path.join(temp_path, "mnist.tar.gz")
+    temp_path, data_path, temp_data_path = make_dirs("mnist")
 
-    if not os.path.exists(temp_path):
-        os.makedirs(temp_path)
+    download_dataset("https://github.com/myleott/mnist_png/raw/master/mnist_png.tar.gz", temp_data_path, "mnist")
 
-    if not os.path.exists(data_path):
-        os.makedirs(os.path.join(data_path, "train"))
-        os.makedirs(os.path.join(data_path, "valid"))
-
-    if not os.path.exists(temp_data_path):
-        download_dataset(url, temp_data_path, "mnist")
-
-    print("Extracting mnist data...")
+    print("Extracting `mnist` data...")
     with tarfile.open(temp_data_path, "r:gz") as tar:
         tar.extractall(temp_path)
 
@@ -149,3 +104,27 @@ def prepare_facade(path):
     np.save(os.path.join(path, "eval_y.npy"), np.array(y[train_len:]))
 
     shutil.rmtree(os.path.join("data", "temp"), )
+
+
+def prepare_cifar10():
+    temp_path, data_path, temp_data_path = make_dirs("cifar10")
+
+    download_dataset("http://pjreddie.com/media/files/cifar.tgz", temp_data_path, "cifar10")
+
+    print("Extracting `cifar10` data...")
+    with tarfile.open(temp_data_path, "r") as tar:
+        tar.extractall(data_path)
+
+    if os.path.exists(os.path.join(data_path, "train")):
+        shutil.rmtree(os.path.join(data_path, "train"))
+
+    if os.path.exists(os.path.join(data_path, "valid")):
+        shutil.rmtree(os.path.join(data_path, "valid"))
+
+    shutil.move(os.path.join(data_path, "cifar", "train"), data_path)
+    shutil.move(os.path.join(data_path, "cifar", "test"), data_path)
+
+    os.rename(os.path.join(data_path, "test"), os.path.join(data_path, "valid"))
+
+    shutil.rmtree(os.path.join(data_path, "cifar"))
+    shutil.rmtree(temp_path)

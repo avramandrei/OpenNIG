@@ -5,7 +5,7 @@
 
 
 import argparse
-from opennng.preparation.prepare import prepare_mnist, prepare_facade
+from opennng.preparation.prepare import prepare_mnist, prepare_facade, prepare_cifar10
 import os
 
 
@@ -14,11 +14,15 @@ if __name__ == "__main__":
     parser.add_argument("dataset", type=str)
     args = parser.parse_args()
 
-    # download the mnist dataset. It will be downloaded in two parts, raw and processed, in data/mnist relative path
+    # download the mnist dataset in 'data/mnist/raw`.
     if args.dataset == "mnist":
         prepare_mnist()
 
-    # download the facade dataset. It will be downloaded in two parts, raw and processed, in data/facade relative path
+    # download the cifar10 dataset in `data/cifar10/
+    if args.dataset == "cifar10":
+        prepare_cifar10()
+
+    # download the facade dataset in 'data/facade/raw'.
     if args.dataset == "facade":
         raw_data_path = os.path.join("data", "facade", "raw")
         processed_data_path = os.path.join("data", "facade", "processed")

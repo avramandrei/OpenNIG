@@ -70,7 +70,7 @@ def conv_vae_trainer(model,
 
             end = time.time()
 
-            print("Iter: {}/{} - Train loss: {:.3f}, Eval loss: {:.3f}, Time: {:.3f}".
+            print("Iter: {}/{} - Train loss: {:.3f}, Valid loss: {:.3f}, Time: {:.3f}".
                   format(iter, iterations, train_loss, loss_mean.result(), 0 if iter == 0 else end-start))
 
             start = time.time()

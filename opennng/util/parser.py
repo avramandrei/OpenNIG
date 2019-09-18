@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from opennng.models.conv_gan import ConvGANSmall
-from opennng.models.conv_vae import ConvVAESmall
+from opennng.models.conv_vae import ConvVAESmall, ConvVAEMedium
 from opennng.util.trainer import conv_vae_trainer, conv_gan_trainer
 import pickle
 import os
@@ -34,6 +34,9 @@ def parse_model(args):
     if args.model == "ConvGANSmall":
         model = ConvGANSmall(input_shape)
         trainer = conv_gan_trainer
+    if args.model == "ConvVAEMedium":
+        model = ConvVAEMedium(input_shape)
+        trainer = conv_vae_trainer
 
     try:
         model.load_weights(args.model_path)

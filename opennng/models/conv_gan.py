@@ -22,10 +22,10 @@ class ConvGANBase(tf.keras.Model):
         The discriminative network classifies an image in either real or fake. Input shape: (batch_size, height, width,
         depth), output_shape: (batch_size, 1).
     """
-    def __init__(self):
+    def __init__(self, input_shape):
         super(ConvGANBase, self).__init__()
 
-        self.build()
+        self.build(input_shape)
 
     def generate(self, noise=None):
         """
@@ -59,14 +59,17 @@ class ConvGANSmall(ConvGANBase):
 
         self.latent_dim = 100
 
+        gen_input_height = int(input_shape[0] / 4)
+        gen_input_width = int(input_shape[1] / 4)
+
         self.generative_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=self.latent_dim),
 
-                tf.keras.layers.Dense(7 * 7 * 256),
+                tf.keras.layers.Dense(gen_input_height * gen_input_width * 256),
                 tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.ReLU(),
-                tf.keras.layers.Reshape((7, 7, 256)),
+                tf.keras.layers.Reshape((gen_input_height, gen_input_width, 256)),
 
                 tf.keras.layers.Conv2DTranspose(
                     filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
@@ -79,7 +82,7 @@ class ConvGANSmall(ConvGANBase):
                 tf.keras.layers.ReLU(),
 
                 tf.keras.layers.Conv2DTranspose(
-                    filters=1, kernel_size=3, strides=(1, 1), padding="SAME", activation="sigmoid")
+                    filters=input_shape[2], kernel_size=3, strides=(1, 1), padding="SAME", activation="sigmoid")
             ],
             name="generative_net"
         )

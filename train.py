@@ -21,11 +21,11 @@ if __name__ == "__main__":
     parser.add_argument("--learning_rate", type=float, default=0.0001)
     parser.add_argument("--iterations", type=int, default=10000)
     parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--save_checkpoint_steps", type=int, default=100)
+    parser.add_argument("--save_checkpoint_steps", type=int, default=500)
     parser.add_argument("--save_checkpoint_path", type=str, default="trained_models")
 
     parser.add_argument("--valid_batch_size", type=int, default=32)
-    parser.add_argument("--valid_steps", type=int, default=100)
+    parser.add_argument("--valid_steps", type=int, default=500)
 
     parser.add_argument("--generate_train_samples", type=bool, default=True)
     parser.add_argument("--num_train_samples", type=int, default=10)
@@ -33,6 +33,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model, trainer = parse_model(args)
+    model.summary()
+
     X_train, X_valid, y_train, y_valid = parse_data(args)
     optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path = parse_train(args)
     valid_batch_size, valid_steps = parse_valid(args)

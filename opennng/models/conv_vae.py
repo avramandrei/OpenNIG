@@ -116,10 +116,11 @@ class ConvVAESmall(ConvVAEBase):
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
 
-                tf.keras.layers.Conv2D(
-                    filters=32, kernel_size=3, strides=(2, 2), activation='relu'),
-                tf.keras.layers.Conv2D(
-                    filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
+                tf.keras.layers.Conv2D(filters=32, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.LeakyReLU(0.05),
 
                 tf.keras.layers.Flatten(),
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
@@ -127,18 +128,31 @@ class ConvVAESmall(ConvVAEBase):
             name="inference_network"
         )
 
+        if input_shape[0] % 4 == 0:
+            gen_input_height = int(input_shape[0]/4)
+        else:
+            raise ValueError("First dimension of the input data must be divisible by 4")
+
+        if input_shape[1] % 4 == 0:
+            gen_input_width = int(input_shape[1] / 4)
+        else:
+            raise ValueError("Second dimension of the input data must be divisible by 4")
+
         self.generative_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
-                tf.keras.layers.Dense(units=7 * 7 * 32, activation=tf.nn.relu),
-                tf.keras.layers.Reshape(target_shape=(7, 7, 32)),
+                tf.keras.layers.Dense(units=gen_input_height * gen_input_width * 32),
+                tf.keras.layers.LeakyReLU(0.05),
 
-                tf.keras.layers.Conv2DTranspose(
-                    filters=64, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
-                tf.keras.layers.Conv2DTranspose(
-                    filters=32, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
-                tf.keras.layers.Conv2DTranspose(
-                    filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.Reshape(target_shape=(gen_input_height, gen_input_width, 32)),
+
+                tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1), padding="SAME"),
             ],
             name="generative_network"
         )
@@ -156,10 +170,14 @@ class ConvVAEMedium(ConvVAEBase):
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
 
-                tf.keras.layers.Conv2D(
-                    filters=64, kernel_size=3, strides=(2, 2), activation='relu'),
-                tf.keras.layers.Conv2D(
-                    filters=128, kernel_size=3, strides=(2, 2), activation='relu'),
+                tf.keras.layers.Conv2D(filters=32, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.LeakyReLU(0.05),
 
                 tf.keras.layers.Flatten(),
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
@@ -167,18 +185,33 @@ class ConvVAEMedium(ConvVAEBase):
             name="inference_network"
         )
 
+        if input_shape[0] % 8 == 0:
+            gen_input_height = int(input_shape[0]/8)
+        else:
+            raise ValueError("First dimension of the input data must be divisible by 8")
+
+        if input_shape[1] % 8 == 0:
+            gen_input_width = int(input_shape[1] / 8)
+        else:
+            raise ValueError("Second dimension of the input data must be divisible by 8")
+
         self.generative_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
-                tf.keras.layers.Dense(units=7 * 7 * 64, activation=tf.nn.relu),
-                tf.keras.layers.Reshape(target_shape=(7, 7, 64)),
+                tf.keras.layers.Dense(units=gen_input_height * gen_input_width * 64),
+                tf.keras.layers.LeakyReLU(0.05),
+                tf.keras.layers.Reshape(target_shape=(gen_input_height, gen_input_width, 64)),
 
-                tf.keras.layers.Conv2DTranspose(
-                    filters=128, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
-                tf.keras.layers.Conv2DTranspose(
-                    filters=64, kernel_size=3, strides=(2, 2), padding="SAME", activation='relu'),
-                tf.keras.layers.Conv2DTranspose(
-                    filters=1, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.LeakyReLU(0.05),
+
+                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1), padding="SAME"),
             ],
             name="generative_network"
         )
