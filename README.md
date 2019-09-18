@@ -21,6 +21,7 @@ If you want to use OpenNNG as a command line interface:
 
 ```
 git clone https://github.com/avramandrei/OpenNNG.git
+cd OpenNNG
 pip install -r requirements.txt
 ```
 
