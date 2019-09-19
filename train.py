@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--save_checkpoint_steps", type=int, default=500)
     parser.add_argument("--save_checkpoint_path", type=str, default="trained_models")
-    parser.add_argument("--label_smooth", type=str, default=0)
+    parser.add_argument("--label_smooth", type=float, default=0)
 
     parser.add_argument("--valid_batch_size", type=int, default=32)
     parser.add_argument("--valid_steps", type=int, default=500)

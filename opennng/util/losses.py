@@ -58,8 +58,6 @@ def gan_disc_loss_fcn(real_output, fake_output):
     fake_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.zeros_like(fake_output) + label_smooth, fake_output)
     loss = real_loss + fake_loss
 
-    print(label_smooth)
-
     return tf.reduce_mean(loss)
 
 
