@@ -62,8 +62,9 @@ def parse_train(args):
     batch_size = args.batch_size
     save_checkpoint_steps = args.save_checkpoint_steps
     save_checkpoint_path = args.save_checkpoint_path
+    label_smooth = args.label_smooth
 
-    return optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path
+    return optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path, label_smooth
 
 
 def parse_valid(args):

@@ -93,6 +93,7 @@ python3 train.py [--model]
 | --valid_steps | int | Perfom validation every X steps. Default: `250`. |
 | --generate_train_samples | bool | Whether to generate samples during training. Default: `True`. |
 | --num_train_samples | int | Number of generated training samples. Default: `10`. |
+| --label_smooth | float | Number used for label smoothing. Default: 0 |
 
 ### Examples of automatically generated GIF's during training
 

@@ -6,6 +6,8 @@
 import tensorflow as tf
 import numpy as np
 
+label_smooth = 0
+
 
 def _log_normal_pdf(sample, mean, logvar, raxis=1):
     log2pi = tf.math.log(2. * np.pi)
@@ -52,9 +54,11 @@ def gan_disc_loss_fcn(real_output, fake_output):
         Returns:
             The loss function of the discriminative network.
     """
-    real_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(real_output), real_output)
-    fake_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.zeros_like(fake_output), fake_output)
+    real_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(real_output) - label_smooth, real_output)
+    fake_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.zeros_like(fake_output) + label_smooth, fake_output)
     loss = real_loss + fake_loss
+
+    print(label_smooth)
 
     return tf.reduce_mean(loss)
 

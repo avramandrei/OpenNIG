@@ -4,6 +4,7 @@
 
 from opennng.util.parser import parse_data, parse_model, parse_train, parse_valid, parse_generate_samples
 import argparse
+import opennng.util.losses as loss
 
 
 if __name__ == "__main__":
@@ -23,6 +24,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--save_checkpoint_steps", type=int, default=500)
     parser.add_argument("--save_checkpoint_path", type=str, default="trained_models")
+    parser.add_argument("--label_smooth", type=str, default=0)
 
     parser.add_argument("--valid_batch_size", type=int, default=32)
     parser.add_argument("--valid_steps", type=int, default=500)
@@ -36,8 +38,12 @@ if __name__ == "__main__":
     model.summary()
 
     X_train, X_valid, y_train, y_valid = parse_data(args)
-    optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path = parse_train(args)
+
+    optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path, label_smooth = parse_train(args)
+    loss.label_smooth = label_smooth
+
     valid_batch_size, valid_steps = parse_valid(args)
+
     generate_train_samples, num_train_samples = parse_generate_samples(args)
 
     if args.from_noise:
