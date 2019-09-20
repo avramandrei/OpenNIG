@@ -119,7 +119,7 @@ def conv_gan_trainer(model,
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
             print("Iter: {}/{} - Checkpoint reached. Saving the model...".format(iter, iterations))
-            model.save_weights(os.path.join(save_checkpoint_path, "model", "model_iter_{}".format(iter)))
+            model.save_weights(os.path.join(save_checkpoint_path, "model", "gan"))
 
             if generate_train_samples:
                 print("Iter: {}/{} - Generating {} train gif samples with model {}..."

@@ -135,20 +135,20 @@ class ConvGANMedium(ConvGANBase):
 
                 tf.keras.layers.Dense(gen_input_height * gen_input_width * 256),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.ReLU(0.02),
                 tf.keras.layers.Reshape((gen_input_height, gen_input_width, 256)),
 
                 tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=5, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.ReLU(0.02),
 
                 tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=5, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.ReLU(0.02),
 
                 tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=5, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.ReLU(0.02),
 
                 tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1),
                                                 padding="SAME", activation="sigmoid")
@@ -160,22 +160,21 @@ class ConvGANMedium(ConvGANBase):
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
 
-                tf.keras.layers.Conv2D(128, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.Conv2D(128, kernel_size=4, strides=(2, 2), padding="SAME"),
                 tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Dropout(0.3),
 
-                tf.keras.layers.Conv2D(128, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.Conv2D(128, kernel_size=4, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Dropout(0.3),
 
-                tf.keras.layers.Conv2D(64, kernel_size=3, strides=(1, 1), padding="SAME"),
+                tf.keras.layers.Conv2D(64, kernel_size=4, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.LeakyReLU(0.02),
                 tf.keras.layers.Dropout(0.3),
 
                 tf.keras.layers.Flatten(),
-                tf.keras.layers.Dense(50),
-                tf.keras.layers.LeakyReLU(0.02),
-                tf.keras.layers.Dropout(0.3),
                 tf.keras.layers.Dense(1),
             ],
             name="discriminative_net"

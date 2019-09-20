@@ -11,6 +11,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--model", type=str)
+    parser.add_argument("--model_path", type=str)
 
     parser.add_argument("--train_X_path", type=str)
     parser.add_argument("--valid_X_path", type=str)
