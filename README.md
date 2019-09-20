@@ -79,6 +79,7 @@ python3 train.py [--model]
 |  Named Argument | Type | Description |
 | --- | --- | -- |
 | --model | str | Type of the model. [Here](docs/models.md) is a list of all the available models. |
+| --model_path | str | Load the model weights from this path. |
 | --train_X_path | str | Path to the X train data, saved as a `.npy` file. |
 | --valid_X_path | str | Path to the X validation data, saved as a `.npy` file. |
 | --train_y_path | str | Path to the y train data, saved as a `.npy` file. |
