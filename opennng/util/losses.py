@@ -55,7 +55,7 @@ def gan_disc_loss_fcn(real_output, fake_output):
             The loss function of the discriminative network.
     """
     real_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(real_output) - label_smooth, real_output)
-    fake_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.zeros_like(fake_output) + label_smooth, fake_output)
+    fake_loss = tf.nn.sigmoid_cross_entropy_with_logits(tf.zeros_like(fake_output), fake_output)
     loss = real_loss + fake_loss
 
     return tf.reduce_mean(loss)

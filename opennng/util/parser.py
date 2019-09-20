@@ -52,7 +52,7 @@ def parse_model(args):
 
 def parse_train(args):
     if args.optimizer == "Adam" and "GAN" in args.model:
-        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
+        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate*2)
         disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         optimizer = (gen_optimizer, disc_optimizer)
     else:

@@ -51,6 +51,7 @@ def gan_train_step(model, x, optimizer):
     gradients_of_discriminator = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
 
     generator_optimizer.apply_gradients(zip(gradients_of_generator, model.generative_net.trainable_variables))
+
     discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
     return gen_loss, disc_loss
