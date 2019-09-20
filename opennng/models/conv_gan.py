@@ -150,7 +150,7 @@ class ConvGANMedium(ConvGANBase):
                 tf.keras.layers.BatchNormalization(),
                 tf.keras.layers.ReLU(0.02),
 
-                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1),
+                tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=5, strides=(1, 1),
                                                 padding="SAME", activation="sigmoid")
             ],
             name="generative_net"

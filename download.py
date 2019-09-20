@@ -6,7 +6,6 @@
 
 import argparse
 from opennng.preparation.prepare import prepare_mnist, prepare_facade, prepare_cifar10
-import os
 
 
 if __name__ == "__main__":
@@ -24,7 +23,4 @@ if __name__ == "__main__":
 
     # download the facade dataset in 'data/facade/raw'.
     if args.dataset == "facade":
-        raw_data_path = os.path.join("data", "facade", "raw")
-        processed_data_path = os.path.join("data", "facade", "processed")
-
-        prepare_facade(raw_data_path)
+        prepare_facade()
