@@ -47,6 +47,8 @@ def conv_vae_trainer(model,
         # perform a train step
         train_loss = vae_train_step(model, train_batch, optimizer)
 
+        print("Iter: {}/{} - Train loss: {:.3f}".format(iter, iterations, train_loss))
+
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
             print("Iter: {}/{} - Checkpoint reached. Saving the model...".format(iter, iterations))
@@ -60,10 +62,9 @@ def conv_vae_trainer(model,
                       .format(iter, iterations, num_train_samples, model.name))
 
                 generate_gif_train_samples(model, num_train_samples,
-                                           noise, os.path.join(save_checkpoint_path, "train_samples"))
+                                           noise, os.path.join(save_checkpoint_path, "train_samples"),
+                                           "[0,1]")
 
-        # if the current step is an validation step, validate the model
-        if iter % valid_steps == 0:
             loss_mean = tf.keras.metrics.Mean()
             for valid_batch in valid_dataset:
                 loss_mean(vae_loss_fcn(model, valid_batch))
@@ -71,7 +72,7 @@ def conv_vae_trainer(model,
             end = time.time()
 
             print("Iter: {}/{} - Train loss: {:.3f}, Valid loss: {:.3f}, Time: {:.3f}".
-                  format(iter, iterations, train_loss, loss_mean.result(), 0 if iter == 0 else end-start))
+                  format(iter, iterations, train_loss, loss_mean.result(), 0 if iter == 0 else end - start))
 
             start = time.time()
 
@@ -116,6 +117,9 @@ def conv_gan_trainer(model,
         # perform a train step
         gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer)
 
+        if iter % valid_steps == 0:
+            print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f})".format(iter, iterations, gen_loss, disc_loss))
+
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
             print("Iter: {}/{} - Checkpoint reached. Saving the model...".format(iter, iterations))
@@ -126,10 +130,9 @@ def conv_gan_trainer(model,
                       .format(iter, iterations, num_train_samples, model.name))
 
                 generate_gif_train_samples(model, num_train_samples,
-                                           noise, os.path.join(save_checkpoint_path, "train_samples"))
+                                           noise, os.path.join(save_checkpoint_path, "train_samples"),
+                                           "[-1,1]")
 
-        # if the current step is an validation step, validate the model
-        if iter % valid_steps == 0:
             valid_gen_mean_loss = tf.keras.metrics.Mean()
             disc_gen_mean_loss = tf.keras.metrics.Mean()
 
@@ -143,6 +146,6 @@ def conv_gan_trainer(model,
             print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f}), "
                   "Valid loss: (gen {:.3f}, disc {:.3f}), Time: {:.3f}".
                   format(iter, iterations, gen_loss, disc_loss,
-                         valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end-start))
+                         valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end - start))
 
             start = time.time()

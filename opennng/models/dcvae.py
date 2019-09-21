@@ -10,7 +10,7 @@ Original paper: https://arxiv.org/abs/1312.6114.
 import tensorflow as tf
 
 
-class ConvVAEBase(tf.keras.Model):
+class DCVAEBase(tf.keras.Model):
     """
         This is the base class for all the Convolutional VAEs. It is composed of two submodels, an inference network
         (inference_net) and a generative network (generative_net) whose architecture is defined in each
@@ -24,7 +24,7 @@ class ConvVAEBase(tf.keras.Model):
     """
 
     def __init__(self, input_shape):
-        super(ConvVAEBase, self).__init__()
+        super(DCVAEBase, self).__init__()
 
         if input_shape is not None:
             self.build(input_shape)
@@ -103,13 +103,13 @@ class ConvVAEBase(tf.keras.Model):
         self.generative_net.summary()
 
 
-class ConvVAESmall(ConvVAEBase):
+class DCVAESmall(DCVAEBase):
     """
         This class is the small version of the Convolutional VAE.
     """
 
     def __init__(self, input_shape):
-        super(ConvVAESmall, self).__init__(input_shape)
+        super(DCVAESmall, self).__init__(input_shape)
 
         self.latent_dim = 50
         self.inference_net = tf.keras.Sequential(
@@ -158,12 +158,12 @@ class ConvVAESmall(ConvVAEBase):
         )
 
 
-class ConvVAEMedium(ConvVAEBase):
+class DCVAEMedium(DCVAEBase):
     """
         This class is the medium version of the Convolutional VAE.
     """
     def __init__(self, input_shape):
-        super(ConvVAEMedium, self).__init__(input_shape)
+        super(DCVAEMedium, self).__init__(input_shape)
 
         self.latent_dim = 150
         self.inference_net = tf.keras.Sequential(

@@ -7,7 +7,6 @@ from opennng.util.losses import vae_loss_fcn, gan_loss_fcn
 import tensorflow as tf
 
 
-@tf.function
 def vae_train_step(model, x, optimizer):
     """
         This function calculates a training step for the Variational Autoencoder.
@@ -28,8 +27,7 @@ def vae_train_step(model, x, optimizer):
     return loss
 
 
-@tf.function
-def gan_train_step(model, x, optimizer):
+def gan_train_step(model, x, optimizer, train_disc=True):
     """
     This function calculates a training step for the Generative Adversarial Network.
 
@@ -48,10 +46,12 @@ def gan_train_step(model, x, optimizer):
         gen_loss, disc_loss = gan_loss_fcn(model, x)
 
     gradients_of_generator = gen_tape.gradient(gen_loss, model.generative_net.trainable_variables)
-    gradients_of_discriminator = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
+    if train_disc:
+        gradients_of_discriminator = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
 
     generator_optimizer.apply_gradients(zip(gradients_of_generator, model.generative_net.trainable_variables))
 
-    discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
+    if train_disc:
+        discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
     return gen_loss, disc_loss

@@ -28,17 +28,17 @@ def parse_model(args):
         with open(os.path.join(os.path.dirname(args.model_path), "model.meta"), "rb") as model_meta:
             input_shape = pickle.load(model_meta)
 
-    if args.model == "ConvVAESmall":
+    if args.model == "DCVAESmall":
         model = ConvVAESmall(input_shape)
         trainer = conv_vae_trainer
-    if args.model == "ConvVAEMedium":
+    if args.model == "DCVAEMedium":
         model = ConvVAEMedium(input_shape)
         trainer = conv_vae_trainer
 
-    if args.model == "ConvGANSmall":
+    if args.model == "DCGANSmall":
         model = ConvGANSmall(input_shape)
         trainer = conv_gan_trainer
-    if args.model == "ConvGANMedium":
+    if args.model == "DCGANMedium":
         model = ConvGANMedium(input_shape)
         trainer = conv_gan_trainer
 
@@ -52,7 +52,7 @@ def parse_model(args):
 
 def parse_train(args):
     if args.optimizer == "Adam" and "GAN" in args.model:
-        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate*2)
+        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         optimizer = (gen_optimizer, disc_optimizer)
     else:
@@ -84,5 +84,6 @@ def parse_generate_samples(args):
 def parse_generate(args):
     num_sample = args.num_sample
     sample_save_path = args.sample_save_path
+    normalize = args.normalize
 
-    return num_sample, sample_save_path
+    return num_sample, sample_save_path, normalize

@@ -15,10 +15,11 @@ if __name__ == "__main__":
     parser.add_argument("model_path", type=str)
     parser.add_argument("--num_sample", type=int, default=10)
     parser.add_argument("--sample_save_path", type=str, default="samples")
+    parser.add_argument("--normalize", type=str, default="[-1,1]")
 
     args = parser.parse_args()
 
     model, _ = parse_model(args)
-    num_sample, sample_save_path = parse_generate(args)
+    num_sample, sample_save_path, normalize = parse_generate(args)
 
-    generate_png_samples(model, num_sample, sample_save_path)
+    generate_png_samples(model, num_sample, sample_save_path, normalize)

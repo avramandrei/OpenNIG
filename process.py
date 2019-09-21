@@ -8,10 +8,11 @@ def load_images_from_path(path):
     data = []
 
     for filename in os.listdir(path):
-        img = Image.open(os.path.join(path, filename))
-        data.append(np.array(img))
+        if "automobile" in filename:
+            img = Image.open(os.path.join(path, filename))
+            data.append(np.array(img))
 
-    return np.array(data, dtype=np.float32)
+    return np.array(data, dtype=np.uint8)
 
 
 if __name__ == "__main__":
@@ -19,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("raw_data_path", type=str)
     parser.add_argument("processed_data_path", type=str)
     parser.add_argument("--from_noise", type=bool, default=True)
-    parser.add_argument("--normalize", type=bool, default=True)
+    parser.add_argument("--normalize", type=str, default="[-1,1]")
 
     args = parser.parse_args()
 
@@ -32,10 +33,16 @@ if __name__ == "__main__":
 
         maximum = np.amax(np.concatenate((train_y, valid_y), axis=0))
 
-        if args.normalize:
+        if args.normalize == "[-1, 1]":
+            print("Normalizing data values to [-1, 1]...")
+            train_y = (train_y - 127.5) / 127.5
+            valid_y = (valid_y - 127.5) / 127.5
+        elif args.normaliza == "[0,1]":
             print("Normalizing data values to [0, 1]...")
-            train_y = train_y / maximum
-            valid_y = valid_y / maximum
+            train_y = (train_y - 127.5) / 127.5
+            valid_y = (valid_y - 127.5) / 127.5
+        else:
+            raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
 
         assert len(train_y.shape) == len(valid_y.shape)
 

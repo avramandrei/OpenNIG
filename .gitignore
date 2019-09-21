@@ -7,6 +7,7 @@ data/*
 trained_models/*
 .idea/*
 samples/*
+trained_models(1)/*
 
 ### Linux ###
 *~

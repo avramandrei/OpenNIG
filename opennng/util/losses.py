@@ -14,7 +14,7 @@ def _log_normal_pdf(sample, mean, logvar, raxis=1):
     return tf.reduce_sum(-.5 * ((sample - mean) ** 2. * tf.exp(-logvar) + logvar + log2pi), axis=raxis)
 
 
-@tf.function
+
 def vae_loss_fcn(model, x):
     """
         This function defines the Variation Autoencoder loss. It is calculated as the Mone Carlo estimator of the
@@ -74,7 +74,6 @@ def gan_gen_loss_fcn(fake_output):
     return tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(fake_output), fake_output))
 
 
-@tf.function
 def gan_loss_fcn(model, x):
     """
         This function defines the total loss of the GAN: generative network loss + discriminative network loss.
@@ -94,6 +93,9 @@ def gan_loss_fcn(model, x):
 
     # generate a new observation
     generated_x = model.generative_net(noise, training=True)
+
+    x = tf.add(x, tf.random.normal(x.shape, dtype=tf.float64))
+    generated_x = tf.add(generated_x, tf.random.normal(x.shape, dtype=tf.float32))
 
     # classify the real and fake inputs
     real_output = model.discriminative_net(x, training=True)

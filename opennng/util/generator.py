@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image, ImageSequence
 
 
-def generate_png_samples(model, num_sample, samples_save_path):
+def generate_png_samples(model, num_sample, samples_save_path, normalize):
     """
         This function generates png images, given a model.
 
@@ -23,8 +23,17 @@ def generate_png_samples(model, num_sample, samples_save_path):
 
     # for each latent sample, generate a new image and save it to the given path
     for i in range(num_sample):
-        sample = np.squeeze(model.generate()) * 255
-        img = Image.fromarray(sample).convert("L")
+        if normalize == "[-1, 1]":
+            sample = np.squeeze(model.generate()) * 127.5 + 127.5
+        elif normalize == "[0, 1]":
+            sample = np.squeeze(model.generate()) * 255
+        else:
+            raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
+
+        if len(sample.shape) == 2:
+            img = Image.fromarray(sample).convert("L")
+        else:
+            img = Image.fromarray(sample.astype(np.uint8), "RGB")
 
         img.save(os.path.join(samples_save_path, "sample_{}.png".format(i+1)), "PNG")
 
@@ -33,7 +42,7 @@ def generate_png_samples(model, num_sample, samples_save_path):
     print("Finished!")
 
 
-def generate_gif_train_samples(model, num_sample, noise, train_samples_path):
+def generate_gif_train_samples(model, num_sample, noise, train_samples_path, normalize):
     """
         This function generate gif samples. It is used to observe the progress of the model at training time. The
         function reads a gif image and adds the new frame to the gif.
@@ -51,14 +60,17 @@ def generate_gif_train_samples(model, num_sample, noise, train_samples_path):
     # for each latent sample, read the gif that corresponds to the sample, generate a new frame, add it to the gif and
     # save the resulted gif to the given path
     for i in range(num_sample):
-        sample = np.squeeze(model.generate(noise[i])) * 255
+        if normalize == "[-1, 1]":
+            sample = np.squeeze(model.generate(noise[i])) * 127.5 + 127.5
+        else:
+            sample = np.squeeze(model.generate(noise[i])) * 255
 
         img_path = os.path.join(train_samples_path, "train_sameple_{}.gif".format(i+1))
 
         if len(sample.shape) == 2:
             new_frame = Image.fromarray(sample).convert("L")
         else:
-            new_frame = Image.fromarray(sample, "RGB")
+            new_frame = Image.fromarray(sample.astype(np.uint8), "RGB")
 
         if os.path.exists(img_path):
             img = Image.open(img_path)
