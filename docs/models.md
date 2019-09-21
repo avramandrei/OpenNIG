@@ -1,4 +1,5 @@
 ### Supported models
-- ConvVAESmall
-- ConvVAEMedium
-- ConvGANSmall
+- DCVAESmall
+- DCVAEMedium
+- DCGANSmall
+- DCGANMedium
