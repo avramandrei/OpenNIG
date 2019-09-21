@@ -61,7 +61,7 @@ python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--norma
 | raw_data_path | str | Path to the raw data. Two(train, valid)/four(train_X, valid_X, train_y, valid_y) folders are expected here. |
 | processed_data_path | str | Path where processed data will be saved |
 | --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. Default: `True`. |
-| --normalize | bool | Whether to normalize the data. Default: `True`. |
+| --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 
 ### Train
 
@@ -70,7 +70,7 @@ To train, run the `train.py` script. This script automatically generates 10 samp
 ```
 python3 train.py [--model] 
                  [--train_X_path] [--valid_X_path] [--train_y_path] [--valid_y_path] [--from_noise] 
-                 [--optimizer] [--learning_rate] [--iterations] [--batch_size] 
+                 [--optimizer] [--learning_rate] [--iterations] [--batch_size] [--label_smooth]
                  [--save_checkpoint_steps] [--save_checkpoint_path]
                  [--valid_batch_size] [--valid_steps] 
                  [--generate_train_samples] [--num_train_samples]
@@ -109,7 +109,7 @@ python3 train.py [--model]
 To generate a new sample, run `generate.py`.
 
 ```
-python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path]
+python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path][--normalize]
 ```
 
 |  Named Argument | Type | Description |
@@ -118,6 +118,7 @@ python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path]
 | model_path | str | Load the model from this path. |
 | --num_sample | int | Number of samples to generate.Default: `10`. |
 | --sample_save_path | str | Save the samples at this path. Default: `samples`. |
+| --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 
 
 
