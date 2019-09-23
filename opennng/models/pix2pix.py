@@ -5,7 +5,7 @@ class Pix2Pix(tf.keras.Model):
     def __init__(self, input_shape):
         super(Pix2Pix, self).__init__()
 
-        self.generative_net = self.generator(input_shape[3])
+        self.generative_net = self.generator()
 
         self.discriminative_net = self.discriminator()
 
@@ -45,7 +45,7 @@ class Pix2Pix(tf.keras.Model):
 
         return result
 
-    def generator(self, output_channels):
+    def generator(self):
         down_stack = [
             self._downsample(64, 4, apply_batchnorm=False),  # (bs, 128, 128, 64)
             self._downsample(128, 4),  # (bs, 64, 64, 128)
@@ -68,7 +68,7 @@ class Pix2Pix(tf.keras.Model):
         ]
 
         initializer = tf.random_normal_initializer(0., 0.02)
-        last = tf.keras.layers.Conv2DTranspose(output_channels, 4,
+        last = tf.keras.layers.Conv2DTranspose(3, 4,
                                                strides=2,
                                                padding='same',
                                                kernel_initializer=initializer,
@@ -76,7 +76,7 @@ class Pix2Pix(tf.keras.Model):
 
         concat = tf.keras.layers.Concatenate()
 
-        inputs = tf.keras.layers.Input(shape=[None, None, 3])
+        inputs = tf.keras.layers.Input(shape=[None, None, 1])
         x = inputs
 
         # Downsampling through the model
@@ -99,7 +99,7 @@ class Pix2Pix(tf.keras.Model):
     def discriminator(self, ):
         initializer = tf.random_normal_initializer(0., 0.02)
 
-        inp = tf.keras.layers.Input(shape=[None, None, 3], name='input_image')
+        inp = tf.keras.layers.Input(shape=[None, None, 1], name='input_image')
         tar = tf.keras.layers.Input(shape=[None, None, 3], name='target_image')
 
         x = tf.keras.layers.concatenate([inp, tar])  # (bs, 256, 256, channels*2)
@@ -127,3 +127,5 @@ class Pix2Pix(tf.keras.Model):
     def generate(self, X):
         return self.generative_net(X)
 
+    def call(self, inputs, training=None, mask=None):
+        pass

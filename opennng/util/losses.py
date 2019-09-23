@@ -14,8 +14,7 @@ def _log_normal_pdf(sample, mean, logvar, raxis=1):
     return tf.reduce_sum(-.5 * ((sample - mean) ** 2. * tf.exp(-logvar) + logvar + log2pi), axis=raxis)
 
 
-
-def vae_loss_fcn(model, x):
+def vae_loss(model, x):
     """
         This function defines the Variation Autoencoder loss. It is calculated as the Mone Carlo estimator of the
         expectation: log p(x|z) + log p(z) + log q(z|x).
@@ -43,7 +42,7 @@ def vae_loss_fcn(model, x):
     return -tf.reduce_mean(logpx_z + logpz - logqz_x)
 
 
-def gan_disc_loss_fcn(real_output, fake_output):
+def gan_disc_loss(real_output, fake_output):
     """
         This function defines the loss of the discriminative network: log D(real_output) + log D(1-fake_output).
 
@@ -61,7 +60,7 @@ def gan_disc_loss_fcn(real_output, fake_output):
     return tf.reduce_mean(loss)
 
 
-def gan_gen_loss_fcn(fake_output):
+def gan_gen_loss(fake_output):
     """
         This function defines the loss of the generative network: log D(fake_output).
 
@@ -74,7 +73,7 @@ def gan_gen_loss_fcn(fake_output):
     return tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(fake_output), fake_output))
 
 
-def gan_loss_fcn(model, x):
+def gan_loss(model, x):
     """
         This function defines the total loss of the GAN: generative network loss + discriminative network loss.
 
@@ -94,15 +93,49 @@ def gan_loss_fcn(model, x):
     # generate a new observation
     generated_x = model.generative_net(noise, training=True)
 
-    x = tf.add(x, tf.random.normal(x.shape, dtype=tf.float64))
-    generated_x = tf.add(generated_x, tf.random.normal(x.shape, dtype=tf.float32))
+    # add noise
+    x = tf.add(x, tf.random.normal(x.shape, stddev=1,  dtype=tf.float64))
+    generated_x = tf.add(generated_x, tf.random.normal(x.shape, stddev=1, dtype=tf.float32))
 
     # classify the real and fake inputs
     real_output = model.discriminative_net(x, training=True)
     fake_output = model.discriminative_net(generated_x, training=True)
 
     # calculate the discriminative and generative networks losses
-    gen_loss = gan_gen_loss_fcn(fake_output)
-    disc_loss = gan_disc_loss_fcn(real_output, fake_output)
+    gen_loss = gan_gen_loss(fake_output)
+    disc_loss = gan_disc_loss(real_output, fake_output)
 
     return gen_loss, disc_loss
+
+
+def pix2pix_disc_loss(disc_real_output, disc_generated_output):
+    cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+
+    real_loss = cross_entropy(tf.ones_like(disc_real_output), disc_real_output)
+
+    generated_loss = cross_entropy(tf.zeros_like(disc_generated_output), disc_generated_output)
+
+    total_disc_loss = real_loss + generated_loss
+
+    return total_disc_loss
+
+
+def pix2pix_gen_loss(disc_generated_output, gen_output, target):
+    cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+    LAMBDA = 100
+
+    gan_loss = cross_entropy(tf.ones_like(disc_generated_output), disc_generated_output)
+
+    # mean absolute error
+    l1_loss = tf.reduce_mean(tf.abs(target - gen_output))
+
+    total_gen_loss = gan_loss + (LAMBDA * l1_loss)
+
+    return total_gen_loss
+
+
+def pix2pix_loss(disc_real_output, disc_generated_output, gen_output, target):
+    disc_loss = pix2pix_disc_loss(disc_real_output, disc_generated_output)
+    gen_loss = pix2pix_gen_loss(disc_generated_output, gen_output, target)
+
+    return disc_loss, gen_loss

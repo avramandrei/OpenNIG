@@ -5,6 +5,7 @@
 from opennng.util.parser import parse_data, parse_model, parse_train, parse_valid, parse_generate_samples
 import argparse
 import opennng.util.losses as loss
+from distutils.util import strtobool
 
 
 if __name__ == "__main__":
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     parser.add_argument("--valid_X_path", type=str)
     parser.add_argument("--train_y_path", type=str)
     parser.add_argument("--valid_y_path", type=str)
-    parser.add_argument("--from_noise", type=bool, default=True)
+    parser.add_argument("--from_noise", type=str, default="True")
 
     parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=0.0001)
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     model, trainer = parse_model(args)
     model.summary()
 
-    X_train, X_valid, y_train, y_valid = parse_data(args)
+    train_X, valid_X, train_y, valid_y = parse_data(args)
 
     optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path, label_smooth = parse_train(args)
     loss.label_smooth = label_smooth
@@ -47,9 +48,15 @@ if __name__ == "__main__":
 
     generate_train_samples, num_train_samples = parse_generate_samples(args)
 
-    if args.from_noise:
+    if strtobool(args.from_noise):
         trainer(model,
-                y_train, y_valid,
+                train_y, valid_y,
+                optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
+                valid_batch_size, valid_steps,
+                generate_train_samples, num_train_samples)
+    else:
+        trainer(model,
+                train_X, valid_X, train_y, valid_y,
                 optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
                 valid_batch_size, valid_steps,
                 generate_train_samples, num_train_samples)

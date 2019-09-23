@@ -3,7 +3,7 @@
 """
 
 
-from opennng.util.losses import vae_loss_fcn, gan_loss_fcn
+from opennng.util.losses import vae_loss, gan_loss, pix2pix_disc_loss, pix2pix_gen_loss
 import tensorflow as tf
 
 
@@ -20,7 +20,7 @@ def vae_train_step(model, x, optimizer):
             The loss value.
     """
     with tf.GradientTape() as tape:
-        loss = vae_loss_fcn(model, x)
+        loss = vae_loss(model, x)
     gradients = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
@@ -43,7 +43,7 @@ def gan_train_step(model, x, optimizer, train_disc=True):
     discriminator_optimizer = optimizer[1]
 
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-        gen_loss, disc_loss = gan_loss_fcn(model, x)
+        gen_loss, disc_loss = gan_loss(model, x)
 
     gradients_of_generator = gen_tape.gradient(gen_loss, model.generative_net.trainable_variables)
     if train_disc:
@@ -55,3 +55,27 @@ def gan_train_step(model, x, optimizer, train_disc=True):
         discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
     return gen_loss, disc_loss
+
+
+def pix2pix_train_step(model, batch, optimizer, train_disc=True):
+    x, y = batch
+
+    print(y.shape)
+
+    generator_optimizer = optimizer[0]
+    discriminator_optimizer = optimizer[1]
+
+    with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
+        gen_y = model.generative_net(x, training=True)
+
+        disc_real_output = model.discriminative_net([x, y], training=True)
+        disc_generated_output = model.discriminative_net([x, gen_y], training=True)
+
+        gen_loss = pix2pix_gen_loss(disc_generated_output, gen_y, y)
+        disc_loss = pix2pix_disc_loss(disc_real_output, disc_generated_output)
+
+    generator_gradients = gen_tape.gradient(gen_loss, model.generative_net.trainable_variables)
+    discriminator_gradients = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
+
+    generator_optimizer.apply_gradients(zip(generator_gradients, model.generative_net.trainable_variables))
+    discriminator_optimizer.apply_gradients(zip(discriminator_gradients, model.discriminative_net.trainable_variables))
