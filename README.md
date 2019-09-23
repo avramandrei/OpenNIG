@@ -4,6 +4,7 @@ OpenNNG (Open Neural Network Generator) is a general purpose data generator tool
 
 - [variational autoencoder](https://arxiv.org/abs/1312.6114)
 - [generative adversarial network](https://arxiv.org/abs/1406.2661)
+- [pix2pix](https://arxiv.org/pdf/1611.07004.pdf)
 
 ## Key features
 
@@ -53,7 +54,7 @@ python3 download.py [database]
 Processed data must be saved in Numpy `.npy` files. Data can be automatically processed using the `process.py` script. 
 
 ```
-python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--normalize]
+python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--normalize][--reshape_y][--reshape_x]
 ```
 
 |  Named Argument | Type | Description |
@@ -62,6 +63,8 @@ python3 process.py [raw_data_path] [processed_data_path] [--from_noise] [--norma
 | processed_data_path | str | Path where processed data will be saved |
 | --from_noise | bool | Whether the generator will produce data from noise or from given data. If set to `True`, two directories are expected in `raw_data_path`, else four directories are expected. Default: `True`. |
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
+| --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`|
+| --reshape_x | str | Reshape y data to specified shape. Shape must be specified as `(width,height)`. Default: `None`|
 
 ### Train
 
