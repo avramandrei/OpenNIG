@@ -15,8 +15,8 @@ def parse_data(args):
             raise ValueError("Parameters 'from_noise' can't be 'True' while 'train_X_path' and 'valid_X_path' are "
                              "different from 'None'")
 
-        train_y_np = np.load(args.train_y_path).astype(np.float32)
-        valid_y_np = np.load(args.valid_y_path).astype(np.float32)
+        train_y_np = np.load(args.train_y_path).astype(np.float32).astype(np.float32)
+        valid_y_np = np.load(args.valid_y_path).astype(np.float32).astype(np.float32)
 
         return None, \
                None, \
@@ -24,10 +24,10 @@ def parse_data(args):
                tf.data.Dataset.from_tensor_slices(valid_y_np)
 
     else:
-        train_X_np = np.load(args.train_X_path).astype(np.float32)
-        valid_X_np = np.load(args.valid_X_path).astype(np.float32)
-        train_y_np = np.load(args.train_y_path).astype(np.float32)
-        valid_y_np = np.load(args.valid_y_path).astype(np.float32)
+        train_X_np = np.load(args.train_X_path).astype(np.float32).astype(np.float32)
+        valid_X_np = np.load(args.valid_X_path).astype(np.float32).astype(np.float32)
+        train_y_np = np.load(args.train_y_path).astype(np.float32).astype(np.float32)
+        valid_y_np = np.load(args.valid_y_path).astype(np.float32).astype(np.float32)
 
         return tf.data.Dataset.from_tensor_slices(train_X_np), \
                tf.data.Dataset.from_tensor_slices(valid_X_np), \
@@ -70,8 +70,8 @@ def parse_model(args):
 
 def parse_train(args):
     if args.optimizer == "Adam" and ("GAN" in args.model or "Pix" in args.model):
-        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate, beta_1=0.5)
-        disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate, beta_1=0.5)
+        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
+        disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         optimizer = (gen_optimizer, disc_optimizer)
     else:
         optimizer = tf.keras.optimizers.Adam(args.learning_rate)
