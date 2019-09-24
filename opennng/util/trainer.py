@@ -114,7 +114,7 @@ def dcgan_trainer(model,
         if iter > iterations:
             break
 
-        train_disc = True if iter % 3 == 0 else False
+        train_disc = True if iter % 2 == 0 else False
 
         # perform a train step
         gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer, train_disc)
