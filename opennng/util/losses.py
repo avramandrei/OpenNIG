@@ -94,8 +94,8 @@ def gan_loss(model, x):
     generated_x = model.generative_net(noise, training=True)
 
     # add noise
-    x = tf.add(x, tf.random.normal(x.shape))
-    generated_x = tf.add(generated_x, tf.random.normal(x.shape))
+    #x = tf.add(x, tf.random.normal(x.shape, stddev=0.25))
+    #generated_x = tf.add(generated_x, tf.random.normal(x.shape))
 
     # classify the real and fake inputs
     real_output = model.discriminative_net(x, training=True)
