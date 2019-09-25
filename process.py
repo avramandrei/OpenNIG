@@ -5,18 +5,23 @@ import numpy as np
 from distutils.util import strtobool
 
 
-def load_images_from_path(path, shape):
+def load_images_from_path(path, shape, flip_left_right):
     data = []
-
-    width = int(shape.split(",")[0][1:])
-    height = int(shape.split(",")[1][:-1])
+    if shape is not None:
+        width = int(shape.split(",")[0][1:])
+        height = int(shape.split(",")[1][:-1])
 
     for filename in os.listdir(path):
-        img = Image.open(os.path.join(path, filename))
+        if "bird" in filename:
+            img = Image.open(os.path.join(path, filename))
 
-        if shape is not None:
-            img = img.resize((width, height))
-        data.append(np.array(img))
+            if shape is not None:
+                img = img.resize((width, height))
+            data.append(np.array(img))
+
+            if flip_left_right and np.random.normal() > 0.5:
+                img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                data.append(np.array(img))
 
     return np.array(data, dtype=np.uint8)
 
@@ -37,8 +42,10 @@ if __name__ == "__main__":
         print("Started processing data from '{}'...".format(args.raw_data_path))
 
         print("Reading train and valid data from '{}'...".format(args.raw_data_path))
-        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train"), args.reshape_y)
-        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid"), args.reshape_y)
+        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train"),
+                                        args.reshape_y, strtobool(args.flip_left_right))
+        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid"),
+                                        args.reshape_y, strtobool(args.flip_left_right))
 
         maximum = np.amax(np.concatenate((train_y, valid_y), axis=0))
 

@@ -70,8 +70,8 @@ def parse_model(args):
 
 def parse_train(args):
     if args.optimizer == "Adam" and ("GAN" in args.model or "Pix" in args.model):
-        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate, beta_1=0.5)
-        disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate, beta_1=0.5)
+        gen_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
+        disc_optimizer = tf.keras.optimizers.Adam(args.learning_rate)
         optimizer = (gen_optimizer, disc_optimizer)
     else:
         optimizer = tf.keras.optimizers.Adam(args.learning_rate)

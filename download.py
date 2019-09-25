@@ -5,7 +5,7 @@
 
 
 import argparse
-from opennng.preparation.prepare import prepare_mnist, prepare_facade, prepare_cifar10
+from opennng.preparation.prepare import prepare_mnist, prepare_facade, prepare_cifar10, prepare_fashion_mnist
 
 
 if __name__ == "__main__":
@@ -16,6 +16,10 @@ if __name__ == "__main__":
     # download the mnist dataset in 'data/mnist/raw`.
     if args.dataset == "mnist":
         prepare_mnist()
+
+    # download the fashion-mnist dataset in `data/cifar10/
+    if args.dataset == "fashion-mnist":
+        prepare_fashion_mnist()
 
     # download the cifar10 dataset in `data/cifar10/
     if args.dataset == "cifar10":

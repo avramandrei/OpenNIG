@@ -73,7 +73,7 @@ def gan_gen_loss(fake_output):
     return tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(tf.ones_like(fake_output), fake_output))
 
 
-def gan_loss(model, x):
+def gan_loss(model, x, iterations, iter):
     """
         This function defines the total loss of the GAN: generative network loss + discriminative network loss.
 
@@ -93,9 +93,13 @@ def gan_loss(model, x):
     # generate a new observation
     generated_x = model.generative_net(noise, training=True)
 
+    a = - 1/(iterations-1)
+    b = iterations/(iterations-1)
+    stddev = a*iter + b
+
     # add noise
-    #x = tf.add(x, tf.random.normal(x.shape, stddev=0.25))
-    #generated_x = tf.add(generated_x, tf.random.normal(x.shape))
+    x = tf.add(x, tf.random.normal(x.shape, stddev=stddev))
+    # generated_x = tf.add(generated_x,  tf.random.normal(x.shape, stddev=stddev))
 
     # classify the real and fake inputs
     real_output = model.discriminative_net(x, training=True)

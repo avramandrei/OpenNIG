@@ -114,10 +114,10 @@ def dcgan_trainer(model,
         if iter > iterations:
             break
 
-        flip_loss = True if iter % 3 == 0 else False
+        train_disc = True if iter % 2 == 0 else False
 
         # perform a train step
-        gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer, flip_loss)
+        gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer, train_disc, iterations, iter+1)
 
         if iter % valid_steps == 0:
             print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f})".format(iter, iterations, gen_loss, disc_loss))
@@ -139,7 +139,7 @@ def dcgan_trainer(model,
             disc_gen_mean_loss = tf.keras.metrics.Mean()
 
             for valid_batch in valid_dataset:
-                gen_loss, disc_loss = gan_loss(model, valid_batch)
+                gen_loss, disc_loss = gan_loss(model, valid_batch, iterations, iter+1)
                 valid_gen_mean_loss(gen_loss)
                 disc_gen_mean_loss(disc_loss)
 
@@ -186,7 +186,7 @@ def pix2pix_trainer(model,
         if iter > iterations:
             break
 
-        train_disc = True if iter % 3 == 0 else False
+        train_disc = True if iter % 2 == 0 else False
 
         # perform a train step
         gen_loss, disc_loss = pix2pix_train_step(model, train_batch, optimizer, train_disc)
