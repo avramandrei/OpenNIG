@@ -65,7 +65,7 @@ def generate_gif_train_samples(model, num_sample, noise, train_samples_path, nor
         else:
             sample = np.squeeze(model.generate(noise[i])) * 255
 
-        img_path = os.path.join(train_samples_path, "train_sameple_{}.gif".format(i+1))
+        img_path = os.path.join(train_samples_path, "train_sample_{}.gif".format(i+1))
 
         if len(sample.shape) == 2:
             new_frame = Image.fromarray(sample).convert("L")
