@@ -12,7 +12,7 @@ def load_images_from_path(path, shape, flip_left_right):
         height = int(shape.split(",")[1][:-1])
 
     for filename in os.listdir(path):
-        if "_0." in filename:
+        if "_7." in filename:
             img = Image.open(os.path.join(path, filename))
 
             if shape is not None:
