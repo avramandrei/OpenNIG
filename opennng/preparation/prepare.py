@@ -1,10 +1,11 @@
 import numpy as np
 import os
 from zipfile import ZipFile
-from PIL import Image
+import tensorflow as tf
 import shutil
 import tarfile
 from opennng.preparation.util import download_dataset, make_dirs
+from PIL import Image
 
 
 def prepare_mnist():
@@ -28,6 +29,24 @@ def prepare_mnist():
         for image in os.listdir(os.path.join(temp_path, "mnist_png", "testing", digit_dir)):
             shutil.copy(os.path.join(temp_path, "mnist_png", "testing", digit_dir, image),
                         os.path.join(data_path, "valid", image))
+
+    shutil.rmtree(temp_path)
+
+
+def prepare_fashion_mnist():
+    temp_path, data_path, temp_data_path = make_dirs("fashion-mnist")
+
+    fashion_mnist = tf.keras.datasets.fashion_mnist
+    (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+
+    print("Extracting `fashion-mnist` data...")
+    for i, (img_arr, img_label) in enumerate(zip(train_images, train_labels)):
+        img = Image.fromarray(img_arr)
+        img.save(os.path.join(data_path, "train", "img_{}_{}.png".format(i, img_label)))
+
+    for i, (img_arr, img_label) in enumerate(zip(test_images, test_labels)):
+        img = Image.fromarray(img_arr)
+        img.save(os.path.join(data_path, "valid", "img_{}_{}.png".format(i, img_label)))
 
     shutil.rmtree(temp_path)
 

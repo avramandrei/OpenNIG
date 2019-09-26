@@ -114,7 +114,8 @@ def dcgan_trainer(model,
         if iter > iterations:
             break
 
-        train_disc = True if iter % 2 == 0 else False
+       # train_disc = True if iter % 2 == 0 else False
+        train_disc = True
 
         # perform a train step
         gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer, train_disc, iterations, iter+1)
@@ -135,22 +136,22 @@ def dcgan_trainer(model,
                                            noise, os.path.join(save_checkpoint_path, "train_samples"),
                                            "[-1,1]")
 
-            valid_gen_mean_loss = tf.keras.metrics.Mean()
-            disc_gen_mean_loss = tf.keras.metrics.Mean()
-
-            for valid_batch in valid_dataset:
-                gen_loss, disc_loss = gan_loss(model, valid_batch, iterations, iter+1)
-                valid_gen_mean_loss(gen_loss)
-                disc_gen_mean_loss(disc_loss)
-
-            end = time.time()
-
-            print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f}), "
-                  "Valid loss: (gen {:.3f}, disc {:.3f}), Time: {:.3f}".
-                  format(iter, iterations, gen_loss, disc_loss,
-                         valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end - start))
-
-            start = time.time()
+            # valid_gen_mean_loss = tf.keras.metrics.Mean()
+            # disc_gen_mean_loss = tf.keras.metrics.Mean()
+            #
+            # for valid_batch in valid_dataset:
+            #     gen_loss, disc_loss = gan_loss(model, valid_batch, iterations, iter+1)
+            #     valid_gen_mean_loss(gen_loss)
+            #     disc_gen_mean_loss(disc_loss)
+            #
+            # end = time.time()
+            #
+            # print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f}), "
+            #       "Valid loss: (gen {:.3f}, disc {:.3f}), Time: {:.3f}".
+            #       format(iter, iterations, gen_loss, disc_loss,
+            #              valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end - start))
+            #
+            # start = time.time()
 
 
 def pix2pix_trainer(model,

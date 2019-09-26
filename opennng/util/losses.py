@@ -98,7 +98,7 @@ def gan_loss(model, x, iterations, iter):
     stddev = a*iter + b
 
     # add noise
-    x = tf.add(x, tf.random.normal(x.shape, stddev=stddev))
+    # x = tf.add(x, tf.random.normal(x.shape, stddev=stddev))
     # generated_x = tf.add(generated_x,  tf.random.normal(x.shape, stddev=stddev))
 
     # classify the real and fake inputs
