@@ -47,7 +47,8 @@ def dcvae_trainer(model,
         # perform a train step
         train_loss = vae_train_step(model, train_batch, optimizer)
 
-        print("Iter: {}/{} - Train loss: {:.3f}".format(iter, iterations, train_loss))
+        if iter % valid_steps == 0:
+            print("Iter: {}/{} - Train loss: {:.3f}".format(iter, iterations, train_loss))
 
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
