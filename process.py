@@ -12,9 +12,9 @@ def load_images_from_path(path, shape, flip_left_right):
         height = int(shape.split(",")[1][:-1])
 
     for filename in os.listdir(path):
-        if "_2." in filename:
+        if "_8." in filename:
             img = Image.open(os.path.join(path, filename))
-    
+
             if shape is not None:
                 img = img.resize((width, height))
             data.append(np.array(img))
