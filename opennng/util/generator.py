@@ -23,12 +23,10 @@ def generate_png_samples(model, num_sample, samples_save_path, normalize):
 
     # for each latent sample, generate a new image and save it to the given path
     for i in range(num_sample):
-        if normalize == "[-1, 1]":
+        if "GAN" in model.name:
             sample = np.squeeze(model.generate()) * 127.5 + 127.5
-        elif normalize == "[0, 1]":
-            sample = np.squeeze(model.generate()) * 255
         else:
-            raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
+            sample = np.squeeze(model.generate()) * 255
 
         if len(sample.shape) == 2:
             img = Image.fromarray(sample).convert("L")
