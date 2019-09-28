@@ -110,6 +110,9 @@ python3 train.py [--model]
 | DCGANMedium | cifar10 | 100k | ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_1.gif) ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_2.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_3.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_4.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_5.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_6.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_7.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_8.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_9.gif)  ![alt text](https://github.com/avramandrei/OpenNNG/blob/master/examples/dcgan_medium_cifar10_samples/train_sample_10.gif) |
 
 
+Note: The above samples are just some examples of the generated images during training. The final results can be improved by tuning the hyperparameters of the models.
+
+
 ### Generate
 
 To generate a new sample, run `generate.py`.
