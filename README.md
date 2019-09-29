@@ -131,7 +131,6 @@ python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path][--n
 | model_path | str | Load the model from this path. |
 | --num_sample | int | Number of samples to generate.Default: `10`. |
 | --sample_save_path | str | Save the samples at this path. Default: `samples`. |
-| --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 
 
 
