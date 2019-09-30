@@ -165,19 +165,22 @@ class DCVAEMedium(DCVAEBase):
     def __init__(self, input_shape):
         super(DCVAEMedium, self).__init__(input_shape)
 
-        self.latent_dim = 150
+        self.latent_dim = 100
         self.inference_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=input_shape),
 
-                tf.keras.layers.Conv2D(filters=32, kernel_size=3, strides=(2, 2)),
-                tf.keras.layers.LeakyReLU(0.02),
-
                 tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=(2, 2)),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
 
                 tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2)),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
+
+                tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=(2, 2)),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
 
                 tf.keras.layers.Flatten(),
                 tf.keras.layers.Dense(self.latent_dim + self.latent_dim),
@@ -198,18 +201,22 @@ class DCVAEMedium(DCVAEBase):
         self.generative_net = tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=(self.latent_dim,)),
-                tf.keras.layers.Dense(units=gen_input_height * gen_input_width * 64),
-                tf.keras.layers.LeakyReLU(0.02),
-                tf.keras.layers.Reshape(target_shape=(gen_input_height, gen_input_width, 64)),
+                tf.keras.layers.Dense(units=gen_input_height * gen_input_width * 128),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
+                tf.keras.layers.Reshape(target_shape=(gen_input_height, gen_input_width, 128)),
 
                 tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=3, strides=(2, 2), padding="SAME"),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
+
+                tf.keras.layers.Conv2DTranspose(filters=128, kernel_size=3, strides=(2, 2), padding="SAME"),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
 
                 tf.keras.layers.Conv2DTranspose(filters=64, kernel_size=3, strides=(2, 2), padding="SAME"),
-                tf.keras.layers.LeakyReLU(0.02),
-
-                tf.keras.layers.Conv2DTranspose(filters=32, kernel_size=3, strides=(2, 2), padding="SAME"),
-                tf.keras.layers.LeakyReLU(0.02),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
 
                 tf.keras.layers.Conv2DTranspose(filters=input_shape[2], kernel_size=3, strides=(1, 1), padding="SAME"),
             ],
