@@ -12,16 +12,15 @@ def load_images_from_path(path, shape, flip_left_right):
         height = int(shape.split(",")[1][:-1])
 
     for filename in os.listdir(path):
-        if "airplane" in filename:
-            img = Image.open(os.path.join(path, filename))
+        img = Image.open(os.path.join(path, filename))
 
-            if shape is not None:
-                img = img.resize((width, height))
+        if shape is not None:
+            img = img.resize((width, height))
+        data.append(np.array(img))
+
+        if flip_left_right and np.random.normal() > 0.5:
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
             data.append(np.array(img))
-
-            if flip_left_right and np.random.normal() > 0.5:
-                img = img.transpose(Image.FLIP_LEFT_RIGHT)
-                data.append(np.array(img))
 
     return np.array(data, dtype=np.uint8)
 
