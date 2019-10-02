@@ -62,8 +62,8 @@ python3 process.py [raw_data_path] [processed_data_path] [--from_noise]
 To train, run the `train.py` script. This script automatically generates 10 samples that shows how the training process evolves at every checkpoint.
 
 ```
-python3 train.py [--model] 
-                 [--train_path] [--valid_path]
+python3 train.py [model] 
+                 [train_path] [valid_path]
                  [--optimizer] [--learning_rate] [--iterations] [--batch_size] [--label_smooth]
                  [--save_checkpoint_steps] [--save_checkpoint_path]
                  [--valid_batch_size] [--valid_steps] 
