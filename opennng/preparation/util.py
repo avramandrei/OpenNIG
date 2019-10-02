@@ -24,7 +24,7 @@ def download_dataset(url, filename, name):
     sys.stdout.write('\n\n')
 
 
-def make_dirs(dataset, from_noise=True):
+def make_dirs(dataset):
     temp_path = os.path.join("data", "temp")
     data_path = os.path.join("data", dataset, "raw")
     temp_data_path = os.path.join(temp_path, dataset + ".tar.gz")
@@ -33,13 +33,7 @@ def make_dirs(dataset, from_noise=True):
         os.makedirs(temp_path)
 
     if not os.path.exists(data_path):
-        if from_noise:
-            os.makedirs(os.path.join(data_path, "train"))
-            os.makedirs(os.path.join(data_path, "valid"))
-        else:
-            os.makedirs(os.path.join(data_path, "train_X"))
-            os.makedirs(os.path.join(data_path, "valid_X"))
-            os.makedirs(os.path.join(data_path, "train_y"))
-            os.makedirs(os.path.join(data_path, "valid_y"))
+        os.makedirs(os.path.join(data_path, "train"))
+        os.makedirs(os.path.join(data_path, "valid"))
 
     return temp_path, data_path, temp_data_path

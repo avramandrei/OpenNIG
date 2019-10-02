@@ -2,37 +2,18 @@ import numpy as np
 import tensorflow as tf
 from opennng.models.dcgan import DCGANSmall, DCGANMedium
 from opennng.models.dcvae import DCVAESmall, DCVAEMedium
-from opennng.models.pix2pix import Pix2Pix
-from opennng.util.trainer import dcvae_trainer, dcgan_trainer, pix2pix_trainer
+from opennng.util.trainer import dcvae_trainer, dcgan_trainer
 import pickle
 import os
 from distutils.util import strtobool
 
 
 def parse_data(args):
-    if strtobool(args.from_noise):
-        if args.train_X_path is not None or args.train_X_path is not None:
-            raise ValueError("Parameters 'from_noise' can't be 'True' while 'train_X_path' and 'valid_X_path' are "
-                             "different from 'None'")
+    train_np = np.load(args.train_y_path).astype(np.float32)
+    valid_np = np.load(args.valid_y_path).astype(np.float32)
 
-        train_y_np = np.load(args.train_y_path).astype(np.float32)
-        valid_y_np = np.load(args.valid_y_path).astype(np.float32)
-
-        return None, \
-               None, \
-               tf.data.Dataset.from_tensor_slices(train_y_np), \
-               tf.data.Dataset.from_tensor_slices(valid_y_np)
-
-    else:
-        train_X_np = np.load(args.train_X_path).astype(np.float32)
-        valid_X_np = np.load(args.valid_X_path).astype(np.float32)
-        train_y_np = np.load(args.train_y_path).astype(np.float32)
-        valid_y_np = np.load(args.valid_y_path).astype(np.float32)
-
-        return tf.data.Dataset.from_tensor_slices(train_X_np), \
-               tf.data.Dataset.from_tensor_slices(valid_X_np), \
-               tf.data.Dataset.from_tensor_slices(train_y_np), \
-               tf.data.Dataset.from_tensor_slices(valid_y_np)
+    return tf.data.Dataset.from_tensor_slices(train_np), \
+           tf.data.Dataset.from_tensor_slices(valid_np)
 
 
 def parse_model(args):
@@ -55,10 +36,6 @@ def parse_model(args):
     if args.model == "DCGANMedium":
         model = DCGANMedium(input_shape)
         trainer = dcgan_trainer
-
-    if args.model == "Pix2Pix":
-        model = Pix2Pix(input_shape)
-        trainer = pix2pix_trainer
 
     try:
         model.load_weights(args.model_path)

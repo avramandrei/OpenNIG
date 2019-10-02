@@ -14,11 +14,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str)
     parser.add_argument("--model_path", type=str)
 
-    parser.add_argument("--train_X_path", type=str)
-    parser.add_argument("--valid_X_path", type=str)
-    parser.add_argument("--train_y_path", type=str)
-    parser.add_argument("--valid_y_path", type=str)
-    parser.add_argument("--from_noise", type=str, default="True")
+    parser.add_argument("--train_path", type=str)
+    parser.add_argument("--valid_path", type=str)
 
     parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=0.0001)
@@ -39,7 +36,7 @@ if __name__ == "__main__":
     model, trainer = parse_model(args)
     model.summary()
 
-    train_X, valid_X, train_y, valid_y = parse_data(args)
+    train, valid = parse_data(args)
 
     optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path, label_smooth = parse_train(args)
     loss.label_smooth = label_smooth
@@ -48,16 +45,9 @@ if __name__ == "__main__":
 
     generate_train_samples, num_train_samples = parse_generate_samples(args)
 
-    if strtobool(args.from_noise):
-        trainer(model,
-                train_y, valid_y,
-                optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
-                valid_batch_size, valid_steps,
-                generate_train_samples, num_train_samples)
-    else:
-        trainer(model,
-                train_X, valid_X, train_y, valid_y,
-                optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
-                valid_batch_size, valid_steps,
-                generate_train_samples, num_train_samples)
+    trainer(model,
+            train, valid,
+            optimizer, iterations, batch_size, save_checkpoint_steps, save_checkpoint_path,
+            valid_batch_size, valid_steps,
+            generate_train_samples, num_train_samples)
 

@@ -24,7 +24,3 @@ if __name__ == "__main__":
     # download the cifar10 dataset in `data/cifar10/
     if args.dataset == "cifar10":
         prepare_cifar10()
-
-    # download the facade dataset in 'data/facade/raw'.
-    if args.dataset == "facade":
-        prepare_facade()

@@ -53,21 +53,3 @@ def gan_train_step(model, x, optimizer, train_disc, iterations, iter):
         discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
     return gen_loss, disc_loss
-
-
-def pix2pix_train_step(model, batch, optimizer, train_disc=True):
-    X, y = batch
-
-    generator_optimizer = optimizer[0]
-    discriminator_optimizer = optimizer[1]
-
-    with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-        gen_loss, disc_loss = pix2pix_loss(model, X, y)
-
-    generator_gradients = gen_tape.gradient(gen_loss, model.generative_net.trainable_variables)
-    discriminator_gradients = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
-
-    generator_optimizer.apply_gradients(zip(generator_gradients, model.generative_net.trainable_variables))
-    discriminator_optimizer.apply_gradients(zip(discriminator_gradients, model.discriminative_net.trainable_variables))
-
-    return gen_loss, disc_loss

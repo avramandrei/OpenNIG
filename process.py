@@ -29,7 +29,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("raw_data_path", type=str)
     parser.add_argument("processed_data_path", type=str)
-    parser.add_argument("--from_noise", type=str, default="True")
     parser.add_argument("--normalize", type=str, default="[-1,1]")
     parser.add_argument("--reshape_X", type=str, default=None)
     parser.add_argument("--reshape_y", type=str, default=None)
@@ -37,80 +36,37 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if strtobool(args.from_noise):
-        print("Started processing data from '{}'...".format(args.raw_data_path))
+    print("Started processing data from '{}'...".format(args.raw_data_path))
 
-        print("Reading train and valid data from '{}'...".format(args.raw_data_path))
-        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train"),
-                                        args.reshape_y, strtobool(args.flip_left_right))
-        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid"),
-                                        args.reshape_y, strtobool(args.flip_left_right))
+    print("Reading train and valid data from '{}'...".format(args.raw_data_path))
+    train = load_images_from_path(os.path.join(args.raw_data_path, "train"),
+                                  args.reshape_y, strtobool(args.flip_left_right))
+    valid = load_images_from_path(os.path.join(args.raw_data_path, "valid"),
+                                  args.reshape_y, strtobool(args.flip_left_right))
 
-        maximum = np.amax(np.concatenate((train_y, valid_y), axis=0))
+    maximum = np.amax(np.concatenate((train, valid), axis=0))
 
-        if args.normalize == "[-1,1]":
-            print("Normalizing data values to [-1, 1]...")
-            train_y = (train_y - 127.5) / 127.5
-            valid_y = (valid_y - 127.5) / 127.5
-        elif args.normalize == "[0,1]":
-            print("Normalizing data values to [0, 1]...")
-            train_y = train_y / 255
-            valid_y = valid_y / 255
-        else:
-            raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
-
-        assert len(train_y.shape) == len(valid_y.shape)
-
-        if len(train_y.shape) == 3:
-            train_y = np.expand_dims(train_y, axis=3)
-            valid_y = np.expand_dims(valid_y, axis=3)
-
-        if not os.path.exists(args.processed_data_path):
-            os.makedirs(args.processed_data_path)
-
-        print("Saving processed data to '{}'...".format(args.processed_data_path))
-        np.save(os.path.join(args.processed_data_path, "train_y.npy"), train_y)
-        np.save(os.path.join(args.processed_data_path, "valid_y.npy"), valid_y)
+    if args.normalize == "[-1,1]":
+        print("Normalizing data values to [-1, 1]...")
+        train = (train - (maximum / 2)) / (maximum / 2)
+        valid = (valid - (maximum / 2)) / (maximum / 2)
+    elif args.normalize == "[0,1]":
+        print("Normalizing data values to [0, 1]...")
+        train = train / maximum
+        valid = valid / maximum
     else:
-        print("Started processing data from '{}'...".format(args.raw_data_path))
+        raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
 
-        print("Reading train and valid data from '{}'...".format(args.raw_data_path))
-        train_X = load_images_from_path(os.path.join(args.raw_data_path, "train_X"), args.reshape_X, False)
-        valid_X = load_images_from_path(os.path.join(args.raw_data_path, "valid_X"), args.reshape_X, False)
-        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train_y"), args.reshape_y, False)
-        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid_y"), args.reshape_y, False)
+    assert len(train.shape) == len(valid.shape)
 
-        if args.normalize == "[-1,1]":
-            print("Normalizing data values to [-1, 1]...")
-            train_X = (train_X - 127.5) / 127.5
-            valid_X = (valid_X - 127.5) / 127.5
-            train_y = (train_y - 127.5) / 127.5
-            valid_y = (valid_y - 127.5) / 127.5
-        elif args.normalize == "[0,1]":
-            print("Normalizing data values to [0, 1]...")
-            train_y = train_y / 255
-            valid_y = valid_y / 255
-            train_y = train_y / 255
-            valid_y = valid_y / 255
-        else:
-            raise ValueError("Argument `--normalize` must be either [-1,1] or [0,1].")
+    if len(train.shape) == 3:
+        train = np.expand_dims(train, axis=3)
+        valid = np.expand_dims(valid, axis=3)
 
-        assert train_y.shape[0] == train_X.shape[0]
-        assert valid_y.shape[0] == valid_X.shape[0]
+    if not os.path.exists(args.processed_data_path):
+        os.makedirs(args.processed_data_path)
 
-        if len(train_y.shape) == 3:
-            train_y = np.expand_dims(train_y, axis=3)
-            valid_y = np.expand_dims(valid_y, axis=3)
-        if len(train_X.shape) == 3:
-            train_X = np.expand_dims(train_X, axis=3)
-            valid_X = np.expand_dims(valid_X, axis=3)
-
-        if not os.path.exists(args.processed_data_path):
-            os.makedirs(args.processed_data_path)
-
-        print("Saving processed data to '{}'...".format(args.processed_data_path))
-        np.save(os.path.join(args.processed_data_path, "train_X.npy"), train_X)
-        np.save(os.path.join(args.processed_data_path, "valid_X.npy"), valid_X)
-        np.save(os.path.join(args.processed_data_path, "train_y.npy"), train_y)
-        np.save(os.path.join(args.processed_data_path, "valid_y.npy"), valid_y)
+    print("Saving processed data to '{}'...".format(args.processed_data_path))
+    np.save(os.path.join(args.processed_data_path, "train.npy"), train)
+    np.save(os.path.join(args.processed_data_path, "valid.npy"), valid)
 

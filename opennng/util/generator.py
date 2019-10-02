@@ -23,7 +23,7 @@ def generate_png_samples(model, num_sample, samples_save_path):
 
     # for each latent sample, generate a new image and save it to the given path
     for i in range(num_sample):
-        if "GAN" or "pix2pix" in model.name:
+        if "GAN" in model.name:
             sample = np.squeeze(model.generate()) * 127.5 + 127.5
         else:
             sample = np.squeeze(model.generate()) * 255

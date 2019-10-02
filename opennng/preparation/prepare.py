@@ -51,38 +51,6 @@ def prepare_fashion_mnist():
     shutil.rmtree(temp_path)
 
 
-def prepare_facade():
-    """
-        This function loads the facade dataset (train and test) and saves it at a given path.
-    """
-
-    temp_path, data_path, temp_data_path = make_dirs("facade", from_noise=False)
-
-    download_dataset("http://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_base.zip", temp_data_path, "facade")
-
-    print("Extracting dataset `facade`...")
-    with ZipFile(temp_data_path, "r") as zip:
-        zip.extractall(os.path.join(temp_path, "facade"))
-
-    X_counter, y_counter = 0, 0
-    for filename in os.listdir(os.path.join(temp_path, "facade", "base")):
-        if "png" in filename:
-            if X_counter < 350:
-                shutil.move(os.path.join(temp_path, "facade", "base", filename), os.path.join(data_path, "train_X"))
-            else:
-                shutil.move(os.path.join(temp_path, "facade", "base", filename), os.path.join(data_path, "valid_X"))
-            X_counter += 1
-
-        if "jpg" in filename:
-            if y_counter < 350:
-                shutil.move(os.path.join(temp_path, "facade", "base", filename), os.path.join(data_path, "train_y"))
-            else:
-                shutil.move(os.path.join(temp_path, "facade", "base", filename), os.path.join(data_path, "valid_y"))
-            y_counter += 1
-
-    shutil.rmtree(temp_path)
-
-
 def prepare_cifar10():
     temp_path, data_path, temp_data_path = make_dirs("cifar10")
 
