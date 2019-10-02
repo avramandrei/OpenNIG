@@ -42,7 +42,7 @@ python3 download.py [database]
 Processed data must be saved in Numpy `.npy` files. Data can be automatically processed using the `process.py` script. 
 
 ```
-python3 process.py [raw_data_path] [processed_data_path] [--from_noise] 
+python3 process.py [raw_data_path] [processed_data_path] 
                    [--normalize]
                    [--reshape_y][--reshape_x]
                    [--flip_left_right]
