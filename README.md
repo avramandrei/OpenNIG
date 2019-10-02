@@ -55,11 +55,11 @@ python3 process.py [raw_data_path] [processed_data_path] [--from_noise]
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 | --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
 | --reshape_x | str | Reshape y data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
-| --flip_left_right | bool | Horizontally lip 50% of the data. Default: `False`. |
+| --flip_left_right | bool | Horizontally flip 50% of the data. Default: `False`. |
 
 ### Train
 
-To train, run the `train.py` script. This script automatically generates 10 samples that shows how the training process evolves at evrey checkpoint.
+To train, run the `train.py` script. This script automatically generates 10 samples that shows how the training process evolves at every checkpoint.
 
 ```
 python3 train.py [--model] 
