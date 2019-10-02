@@ -72,10 +72,10 @@ python3 train.py [--model]
 
 |  Named Argument | Type | Description |
 | --- | --- | -- |
-| --model | str | Type of the model. [Here](docs/models.md) is a list of all the available models. |
+| model | str | Type of the model. [Here](docs/models.md) is a list of all the available models. |
 | --model_path | str | Load the model weights from this path. |
-| --train_path | str | Path to the train data, saved as a `.npy` file. |
-| --valid_path | str | Path to the validation data, saved as a `.npy` file. |
+| train_path | str | Path to the train data, saved as a `.npy` file. |
+| valid_path | str | Path to the validation data, saved as a `.npy` file. |
 | --optimizer | str | Name of the optimizer, as described in https://keras.io/optimizers/. Default value: `"Adam"` |
 | --learning_rate | float | Learning rate of the optimizer. Default: `0.001`. |
 | --iterations | int | Number of training steps. Default: `100000`. |
