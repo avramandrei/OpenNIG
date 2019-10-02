@@ -1,27 +1,15 @@
-# OpenNNG (Work in progress...)
+# OpenIG (Work in progress...)
 
-OpenNNG (Open Neural Network Generator) is a general purpose data generator toolkit that uses TensorFlow 2.0. Supported architectures:
+OpenIG (Open Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. An compresive list of supported architectures can be found [here]().
 
-- [variational autoencoder](https://arxiv.org/abs/1312.6114)
-- [generative adversarial network](https://arxiv.org/abs/1406.2661)
-- [pix2pix](https://arxiv.org/pdf/1611.07004.pdf)
-
-## Key features
-
-OpenNNG focuses on modularity to support advanced modeling and training capabilities:
-
- - usage of predefined models
- - creation of custom architectures
- - domain adaptation
- 
 ## Installation
 
 ### Clone repository
 
-If you want to use OpenNNG as a command line interface:
+If you want to use OpenIG as a command line interface:
 
 ```
-git clone https://github.com/avramandrei/OpenNNG.git
+git clone https://github.com/avramandrei/OpenIG.git
 cd OpenNNG/
 pip install -r requirements.txt
 ```
@@ -43,7 +31,7 @@ OpenNNG requires:
  
 ### Data downloading
 
-OpenNNG offers a veriety of databases that can be downloaded with the `download.py` script. [Here](docs/databases.md) is a list of the available databases.
+OpenIG offers a veriety of databases that can be downloaded with the `download.py` script. [Here](docs/databases.md) is a list of the available databases.
 
 ```
 python3 download.py [database]
