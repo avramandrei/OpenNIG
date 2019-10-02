@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image, ImageSequence
 
 
-def generate_png_samples(model, num_sample, samples_save_path, normalize):
+def generate_png_samples(model, num_sample, samples_save_path):
     """
         This function generates png images, given a model.
 
@@ -23,7 +23,7 @@ def generate_png_samples(model, num_sample, samples_save_path, normalize):
 
     # for each latent sample, generate a new image and save it to the given path
     for i in range(num_sample):
-        if "GAN" in model.name:
+        if "GAN" or "pix2pix" in model.name:
             sample = np.squeeze(model.generate()) * 127.5 + 127.5
         else:
             sample = np.squeeze(model.generate()) * 255
@@ -58,7 +58,7 @@ def generate_gif_train_samples(model, num_sample, noise, train_samples_path, nor
     # for each latent sample, read the gif that corresponds to the sample, generate a new frame, add it to the gif and
     # save the resulted gif to the given path
     for i in range(num_sample):
-        if normalize == "[-1, 1]":
+        if normalize == "[-1,1]":
             sample = np.squeeze(model.generate(noise[i])) * 127.5 + 127.5
         else:
             sample = np.squeeze(model.generate(noise[i])) * 255

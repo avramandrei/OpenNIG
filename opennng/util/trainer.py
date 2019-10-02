@@ -137,22 +137,22 @@ def dcgan_trainer(model,
                                            noise, os.path.join(save_checkpoint_path, "train_samples"),
                                            "[-1,1]")
 
-            # valid_gen_mean_loss = tf.keras.metrics.Mean()
-            # disc_gen_mean_loss = tf.keras.metrics.Mean()
-            #
-            # for valid_batch in valid_dataset:
-            #     gen_loss, disc_loss = gan_loss(model, valid_batch, iterations, iter+1)
-            #     valid_gen_mean_loss(gen_loss)
-            #     disc_gen_mean_loss(disc_loss)
-            #
-            # end = time.time()
-            #
-            # print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f}), "
-            #       "Valid loss: (gen {:.3f}, disc {:.3f}), Time: {:.3f}".
-            #       format(iter, iterations, gen_loss, disc_loss,
-            #              valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end - start))
-            #
-            # start = time.time()
+            valid_gen_mean_loss = tf.keras.metrics.Mean()
+            disc_gen_mean_loss = tf.keras.metrics.Mean()
+
+            for valid_batch in valid_dataset:
+                gen_loss, disc_loss = gan_loss(model, valid_batch, iterations, iter+1)
+                valid_gen_mean_loss(gen_loss)
+                disc_gen_mean_loss(disc_loss)
+
+            end = time.time()
+
+            print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f}), "
+                  "Valid loss: (gen {:.3f}, disc {:.3f}), Time: {:.3f}".
+                  format(iter, iterations, gen_loss, disc_loss,
+                         valid_gen_mean_loss.result(), disc_gen_mean_loss.result(), 0 if iter == 0 else end - start))
+
+            start = time.time()
 
 
 def pix2pix_trainer(model,
@@ -206,15 +206,15 @@ def pix2pix_trainer(model,
                       .format(iter, iterations, num_train_samples, model.name))
 
                 generate_gif_train_samples(model, num_train_samples,
-                                           train_batch[1][:num_train_samples],
+                                           tf.expand_dims(train_batch[0][:num_train_samples], axis=1),
                                            os.path.join(save_checkpoint_path, "train_samples"),
                                            "[-1,1]")
 
             valid_gen_mean_loss = tf.keras.metrics.Mean()
             disc_gen_mean_loss = tf.keras.metrics.Mean()
 
-            for valid_batch in valid_dataset:
-                gen_loss, disc_loss = pix2pix_loss(model, valid_batch)
+            for (valid_X, valid_y) in valid_dataset:
+                gen_loss, disc_loss = pix2pix_loss(model, valid_X, valid_y)
                 valid_gen_mean_loss(gen_loss)
                 disc_gen_mean_loss(disc_loss)
 

@@ -75,10 +75,10 @@ if __name__ == "__main__":
         print("Started processing data from '{}'...".format(args.raw_data_path))
 
         print("Reading train and valid data from '{}'...".format(args.raw_data_path))
-        train_X = load_images_from_path(os.path.join(args.raw_data_path, "train_X"), args.reshape_X)
-        valid_X = load_images_from_path(os.path.join(args.raw_data_path, "valid_X"), args.reshape_X)
-        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train_y"), args.reshape_y)
-        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid_y"), args.reshape_y)
+        train_X = load_images_from_path(os.path.join(args.raw_data_path, "train_X"), args.reshape_X, False)
+        valid_X = load_images_from_path(os.path.join(args.raw_data_path, "valid_X"), args.reshape_X, False)
+        train_y = load_images_from_path(os.path.join(args.raw_data_path, "train_y"), args.reshape_y, False)
+        valid_y = load_images_from_path(os.path.join(args.raw_data_path, "valid_y"), args.reshape_y, False)
 
         if args.normalize == "[-1,1]":
             print("Normalizing data values to [-1, 1]...")

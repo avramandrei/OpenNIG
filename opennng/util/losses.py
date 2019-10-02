@@ -91,19 +91,11 @@ def gan_loss(model, x, iterations, iter):
     noise = tf.random.normal([batch_size, model.latent_dim])
 
     # generate a new observation
-    generated_x = model.generative_net(noise, training=True)
-
-    a = - 1/(iterations-1)
-    b = iterations/(iterations-1)
-    stddev = a*iter + b
-
-    # add noise
-    # x = tf.add(x, tf.random.normal(x.shape, stddev=stddev))
-    # generated_x = tf.add(generated_x,  tf.random.normal(x.shape, stddev=stddev))
+    generated_x = model.generative_net(noise)
 
     # classify the real and fake inputs
-    real_output = model.discriminative_net(x, training=True)
-    fake_output = model.discriminative_net(generated_x, training=True)
+    real_output = model.discriminative_net(x)
+    fake_output = model.discriminative_net(generated_x)
 
     # calculate the discriminative and generative networks losses
     gen_loss = gan_gen_loss(fake_output)
@@ -138,8 +130,13 @@ def pix2pix_gen_loss(disc_generated_output, gen_output, target):
     return total_gen_loss
 
 
-def pix2pix_loss(disc_real_output, disc_generated_output, gen_output, target):
+def pix2pix_loss(model, X, y):
+    gen_y = model.generative_net(X)
+
+    disc_real_output = model.discriminative_net([X, y])
+    disc_generated_output = model.discriminative_net([X, gen_y])
+
+    gen_loss = pix2pix_gen_loss(disc_generated_output, gen_y, y)
     disc_loss = pix2pix_disc_loss(disc_real_output, disc_generated_output)
-    gen_loss = pix2pix_gen_loss(disc_generated_output, gen_output, target)
 
     return disc_loss, gen_loss
