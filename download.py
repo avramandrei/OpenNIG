@@ -5,7 +5,7 @@
 
 
 import argparse
-from opennng.preparation.prepare import prepare_mnist, prepare_facade, prepare_cifar10, prepare_fashion_mnist
+from opennng.preparation.prepare import prepare_mnist, prepare_cifar10, prepare_fashion_mnist
 
 
 if __name__ == "__main__":

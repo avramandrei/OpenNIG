@@ -5,12 +5,11 @@ from opennng.models.dcvae import DCVAESmall, DCVAEMedium
 from opennng.util.trainer import dcvae_trainer, dcgan_trainer
 import pickle
 import os
-from distutils.util import strtobool
 
 
 def parse_data(args):
-    train_np = np.load(args.train_y_path).astype(np.float32)
-    valid_np = np.load(args.valid_y_path).astype(np.float32)
+    train_np = np.load(args.train_path).astype(np.float32)
+    valid_np = np.load(args.valid_path).astype(np.float32)
 
     return tf.data.Dataset.from_tensor_slices(train_np), \
            tf.data.Dataset.from_tensor_slices(valid_np)
@@ -18,7 +17,7 @@ def parse_data(args):
 
 def parse_model(args):
     try:
-        input_shape = np.load(args.valid_y_path).shape[1:]
+        input_shape = np.load(args.valid_path).shape[1:]
     except AttributeError:
         with open(os.path.join(os.path.dirname(args.model_path), "model.meta"), "rb") as model_meta:
             input_shape = pickle.load(model_meta)
