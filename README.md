@@ -49,8 +49,8 @@ python3 process.py [train_dir_path] [valid_dir_path]
 
 |  Argument | Type | Description |
 | -------------------- | --- | -- |
-| train_dir_path | str | Path to the `train` directory. |
-| valid_dir_path | str | Path to the `valid` directory. |
+| train_dir_path | str | Path to the `train` directory containing the training images. |
+| valid_dir_path | str | Path to the `valid` directory containing the validation images. |
 | output_path | str | Path where processed data will be saved |
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 | --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
