@@ -42,7 +42,7 @@ If you want to use other datasets, you have to manually create two directories, 
 python3 process.py [train_dir_path] [valid_dir_path] 
                    [output_path] 
                    [--normalize]
-                   [--reshape_y] [--reshape_x]
+                   [--reshape]
                    [--flip_left_right]
                    [--flip_top_bottom]
 ```
