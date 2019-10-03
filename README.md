@@ -1,29 +1,24 @@
 # OpenNIG (Work in progress...)
 
-OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. 
+OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering a flexible and easy to use ecosystem for such models. 
 
 ## Installation
 
 ### Clone repository
 
-If you want to use OpenNIG as a command line interface:
+Simply clone the repository and install the requirements.
 
 ```
 git clone https://github.com/avramandrei/OpenNIG.git
 cd OpenNIG/
 pip install -r requirements.txt
 ```
-
+ 
 ## Usage
 
-OpenNIG requires:
- - Python >= 3.6
- - TensorFlow >= 2.0.0rc0
- - Pillow >=6.1
- 
 ### Data downloading
 
-OpenNIG offers three databases that can be downloaded with the `download.py` script: `mnist`, `fashion-mnist` and `cifar10`. The images will be saved in two directories, `train` and `valid`, in `data/raw/<database>`.
+OpenNIG offers three demos databases that can be downloaded with the `download.py` script: `mnist`, `fashion-mnist` and `cifar10`. The images will be saved in two directories, `train` and `valid`, in `data/raw/<database>`.
 
 ```
 python3 download.py [database]
@@ -31,20 +26,22 @@ python3 download.py [database]
  
 ### Data processing
 
-To process the data, you have to create two directories, `train` and `valid`, that contain the training and the validation images, respectevly. Run the `process.py` script to process the images in these directories. The script will create two files that can be used for training and validation, `train.npy` and `valid.npy`.
+If you want to use other datasets, you have to manually create two directories, `train` and `valid`, that contain the training and the validation images, respectevly. Run the `process.py` script to process the images in these directories. The script will create two files, `train.npy` and `valid.npy`.
 
 ```
-python3 process.py [raw_data_path] [processed_data_path] 
+python3 process.py [train_dir_path] [valid_dir_path] 
+                   [output_path] 
                    [--normalize]
-                   [--reshape_y][--reshape_x]
+                   [--reshape_y] [--reshape_x]
                    [--flip_left_right]
                    [--flip_top_bottom]
 ```
 
 |  Named Argument | Type | Description |
 | -------------------- | --- | -- |
-| raw_data_path | str | Path to the `train` and `valid` directories. |
-| processed_data_path | str | Path where processed data will be saved |
+| train_dir_path | str | Path to the `train` directory. |
+| valid_dir_path | str | Path to the `valid` directory. |
+| output_path | str | Path where processed data will be saved |
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 | --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
 | --reshape_x | str | Reshape y data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
@@ -53,7 +50,7 @@ python3 process.py [raw_data_path] [processed_data_path]
 
 ### Train
 
-To train, run the `train.py` script. This script automatically generates 10 samples that shows how the training process evolves at every checkpoint.
+To train, run the `train.py` script. This script automatically generates 10 GIF images in `<save_checkpoint_path>/samples`, that show how the training process evolves at every checkpoint.
 
 ```
 python3 train.py [model] 
@@ -66,7 +63,7 @@ python3 train.py [model]
 
 |  Named Argument | Type | Description |
 | --- | --- | -- |
-| model | str | Type of the model. [Here](docs/models.md) is a list of all the available models. |
+| model | str | Type of the model: DCVAESmall, DCVAEMedium, DCVAEBig, DCGANSmall, DCGANMedium, DCGANBig.  |
 | --model_path | str | Load the model weights from this path. |
 | train_path | str | Path to the train data, saved as a `.npy` file. |
 | valid_path | str | Path to the validation data, saved as a `.npy` file. |
@@ -99,7 +96,7 @@ Note: The above samples are just some examples of the generated images during tr
 
 ### Generate
 
-To generate a new sample, run `generate.py`.
+To generate new images, run `generate.py`.
 
 ```
 python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path][--normalize]
