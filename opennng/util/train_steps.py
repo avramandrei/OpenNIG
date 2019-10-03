@@ -3,7 +3,7 @@
 """
 
 
-from opennng.util.losses import vae_loss, gan_loss, pix2pix_disc_loss, pix2pix_gen_loss, pix2pix_loss
+from opennng.util.losses import vae_loss, gan_loss
 import tensorflow as tf
 
 
@@ -27,7 +27,7 @@ def vae_train_step(model, x, optimizer):
     return loss
 
 
-def gan_train_step(model, x, optimizer, train_disc, iterations, iter):
+def gan_train_step(model, x, optimizer):
     """
     This function calculates a training step for the Generative Adversarial Network.
 
@@ -43,13 +43,12 @@ def gan_train_step(model, x, optimizer, train_disc, iterations, iter):
     discriminator_optimizer = optimizer[1]
 
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-        gen_loss, disc_loss = gan_loss(model, x, iterations, iter)
+        gen_loss, disc_loss = gan_loss(model, x)
 
     gradients_of_generator = gen_tape.gradient(gen_loss, model.generative_net.trainable_variables)
     generator_optimizer.apply_gradients(zip(gradients_of_generator, model.generative_net.trainable_variables))
 
-    if train_disc:
-        gradients_of_discriminator = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
-        discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
+    gradients_of_discriminator = disc_tape.gradient(disc_loss, model.discriminative_net.trainable_variables)
+    discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, model.discriminative_net.trainable_variables))
 
     return gen_loss, disc_loss

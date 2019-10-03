@@ -2,8 +2,8 @@ import tensorflow as tf
 import time
 import os
 from opennng.util.generator import generate_gif_train_samples
-from opennng.util.train_steps import vae_train_step, gan_train_step, pix2pix_train_step
-from opennng.util.losses import vae_loss, gan_loss, pix2pix_loss
+from opennng.util.train_steps import vae_train_step, gan_train_step
+from opennng.util.losses import vae_loss, gan_loss
 import pickle
 
 
@@ -47,8 +47,7 @@ def dcvae_trainer(model,
         # perform a train step
         train_loss = vae_train_step(model, train_batch, optimizer)
 
-        if iter % valid_steps == 0:
-            print("Iter: {}/{} - Train loss: {:.3f}".format(iter, iterations, train_loss))
+        print("Iter: {}/{} - Train loss: {:.3f}".format(iter, iterations, train_loss))
 
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
@@ -66,6 +65,7 @@ def dcvae_trainer(model,
                                            noise, os.path.join(save_checkpoint_path, "train_samples"),
                                            "[0,1]")
 
+        if iter % valid_steps == 0:
             loss_mean = tf.keras.metrics.Mean()
             for valid_batch in valid_dataset:
                 loss_mean(vae_loss(model, valid_batch))
@@ -115,14 +115,10 @@ def dcgan_trainer(model,
         if iter > iterations:
             break
 
-       # train_disc = True if iter % 2 == 0 else False
-        train_disc = True
-
         # perform a train step
-        gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer, train_disc, iterations, iter+1)
+        gen_loss, disc_loss = gan_train_step(model, train_batch, optimizer)
 
-        if iter % valid_steps == 0:
-            print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f})".format(iter, iterations, gen_loss, disc_loss))
+        print("Iter: {}/{} - Train loss: (gen {:.3f}, disc {:.3f})".format(iter, iterations, gen_loss, disc_loss))
 
         # if the current step is a saving checkpoint step, save the model and add a new frame to the gif samples
         if iter % save_checkpoint_steps == 0:
@@ -137,6 +133,7 @@ def dcgan_trainer(model,
                                            noise, os.path.join(save_checkpoint_path, "train_samples"),
                                            "[-1,1]")
 
+        if iter % valid_steps == 0:
             valid_gen_mean_loss = tf.keras.metrics.Mean()
             disc_gen_mean_loss = tf.keras.metrics.Mean()
 

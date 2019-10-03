@@ -11,11 +11,11 @@ from distutils.util import strtobool
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--model", type=str)
+    parser.add_argument("model", type=str)
     parser.add_argument("--model_path", type=str)
 
-    parser.add_argument("--train_path", type=str)
-    parser.add_argument("--valid_path", type=str)
+    parser.add_argument("train_path", type=str)
+    parser.add_argument("valid_path", type=str)
 
     parser.add_argument("--optimizer", type=str, default="Adam")
     parser.add_argument("--learning_rate", type=float, default=0.0001)

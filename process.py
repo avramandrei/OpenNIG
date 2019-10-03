@@ -5,7 +5,7 @@ import numpy as np
 from distutils.util import strtobool
 
 
-def load_images_from_path(path, shape, flip_left_right):
+def load_images_from_path(path, shape, flip_left_right, flip_top_down):
     data = []
     if shape is not None:
         width = int(shape.split(",")[0][1:])
@@ -22,27 +22,36 @@ def load_images_from_path(path, shape, flip_left_right):
             img = img.transpose(Image.FLIP_LEFT_RIGHT)
             data.append(np.array(img))
 
+        if flip_top_down and np.random.normal() > 0.5:
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            data.append(np.array(img))
+
     return np.array(data, dtype=np.uint8)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("raw_data_path", type=str)
-    parser.add_argument("processed_data_path", type=str)
+    parser.add_argument("train_dir_path", type=str)
+    parser.add_argument("valid_dir_path", type=str)
+    parser.add_argument("output_path", type=str)
     parser.add_argument("--normalize", type=str, default="[-1,1]")
-    parser.add_argument("--reshape_X", type=str, default=None)
-    parser.add_argument("--reshape_y", type=str, default=None)
+    parser.add_argument("--reshape", type=str, default=None)
     parser.add_argument("--flip_left_right", type=str, default="False")
+    parser.add_argument("--flip_top_bottom", type=str, default="False")
 
     args = parser.parse_args()
 
     print("Started processing data from '{}'...".format(args.raw_data_path))
 
     print("Reading train and valid data from '{}'...".format(args.raw_data_path))
-    train = load_images_from_path(os.path.join(args.raw_data_path, "train"),
-                                  args.reshape_y, strtobool(args.flip_left_right))
-    valid = load_images_from_path(os.path.join(args.raw_data_path, "valid"),
-                                  args.reshape_y, strtobool(args.flip_left_right))
+    train = load_images_from_path(os.path.join(args.train_dir_path, "train"),
+                                  args.reshape,
+                                  strtobool(args.flip_left_right),
+                                  strtobool(args.flip_top_bottom))
+    valid = load_images_from_path(os.path.join(args.flip_top_bottom, "valid"),
+                                  args.reshape,
+                                  strtobool(args.flip_left_right),
+                                  strtobool(args.flip_top_bottom))
 
     maximum = np.amax(np.concatenate((train, valid), axis=0))
 
@@ -67,6 +76,6 @@ if __name__ == "__main__":
         os.makedirs(args.processed_data_path)
 
     print("Saving processed data to '{}'...".format(args.processed_data_path))
-    np.save(os.path.join(args.processed_data_path, "train.npy"), train)
-    np.save(os.path.join(args.processed_data_path, "valid.npy"), valid)
+    np.save(os.path.join(args.output_path, "train.npy"), train)
+    np.save(os.path.join(args.output_path, "valid.npy"), valid)
 
