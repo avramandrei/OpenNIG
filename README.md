@@ -37,7 +37,7 @@ python3 process.py [train_dir_path] [valid_dir_path]
                    [--flip_top_bottom]
 ```
 
-|  Named Argument | Type | Description |
+|  Argument | Type | Description |
 | -------------------- | --- | -- |
 | train_dir_path | str | Path to the `train` directory. |
 | valid_dir_path | str | Path to the `valid` directory. |
@@ -61,7 +61,7 @@ python3 train.py [model]
                  [--generate_train_samples] [--num_train_samples]
 ```
 
-|  Named Argument | Type | Description |
+|  Argument | Type | Description |
 | --- | --- | -- |
 | model | str | Type of the model: DCVAESmall, DCVAEMedium, DCVAEBig, DCGANSmall, DCGANMedium, DCGANBig.  |
 | --model_path | str | Load the model weights from this path. |
@@ -102,7 +102,7 @@ To generate new images, run `generate.py`.
 python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path][--normalize]
 ```
 
-|  Named Argument | Type | Description | 
+|  Argument | Type | Description | 
 | --- | --- | -- |
 | model | str | Type of the model. [Here](docs/models.md) is a list of all the available models. |
 | model_path | str | Load the model from this path. |
