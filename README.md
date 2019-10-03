@@ -1,4 +1,4 @@
-# OpenNIG (Work in progress...)
+# OpenNIG 
 
 OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering a flexible and easy to use ecosystem for such models. 
 
@@ -12,7 +12,7 @@ cd OpenNIG/
 pip install -r requirements.txt
 ```
 
-## Evolution of the learning process
+## Evolution of the generated images
 
 | Model | Dataset | Iterations | Samples |
 | --- | --- | --- | :---: |
