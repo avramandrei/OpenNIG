@@ -9,7 +9,7 @@ Simply clone the repository and install the requirements.
 ```
 git clone https://github.com/avramandrei/OpenNIG.git
 cd OpenNIG/
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### Evolution of the generated images
