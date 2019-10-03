@@ -4,8 +4,6 @@ OpenNIG (Open Neural Image Generator) is a toolkit that generates new images fro
 
 ## Installation
 
-### Clone repository
-
 Simply clone the repository and install the requirements.
 
 ```
