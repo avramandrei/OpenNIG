@@ -1,6 +1,6 @@
 # OpenNIG (Work in progress...)
 
-OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. An compresive list of predefined models and their hyperparameters can be found [here]().
+OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. An compresive list of predefined models can be found [here]().
 
 ## Installation
 
