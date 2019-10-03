@@ -1,6 +1,6 @@
 # OpenNIG (Work in progress...)
 
-OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. A compresive list of predefined models can be found [here]().
+OpenNIG (Open Neural Image Generator) is a toolkit that generates new images from a given distribution. Its role is to accelerate research in that direction by offering an flexible and easy to use ecosystem for state of the art models. 
 
 ## Installation
 
@@ -14,14 +14,6 @@ cd OpenNIG/
 pip install -r requirements.txt
 ```
 
-### pip (not finished yet)
-
-If you want to use OpenNIG as an API:
-
-```
-pip install opennng
-```
-
 ## Usage
 
 OpenNIG requires:
@@ -31,7 +23,7 @@ OpenNIG requires:
  
 ### Data downloading
 
-OpenNIG offers a veriety of databases that can be downloaded with the `download.py` script. [Here](docs/databases.md) is a list of the available databases.
+OpenNIG offers three databases that can be downloaded with the `download.py` script: `mnist`, `fashion-mnist` and `cifar10`. The images will be saved in two directories, `train` and `valid`, in `data/raw/<database>`.
 
 ```
 python3 download.py [database]
@@ -39,23 +31,25 @@ python3 download.py [database]
  
 ### Data processing
 
-Processed data must be saved in Numpy `.npy` files. Data can be automatically processed using the `process.py` script. 
+To process the data, you have to create two directories, `train` and `valid`, that contain the training and the validation images, respectevly. Run the `process.py` script to process the images in these directories. The script will create two files that can be used for training and validation, `train.npy` and `valid.npy`.
 
 ```
 python3 process.py [raw_data_path] [processed_data_path] 
                    [--normalize]
                    [--reshape_y][--reshape_x]
                    [--flip_left_right]
+                   [--flip_top_bottom]
 ```
 
 |  Named Argument | Type | Description |
 | -------------------- | --- | -- |
-| raw_data_path | str | Path to the raw data. Two (`train` and `valid`) folders are expected here. |
+| raw_data_path | str | Path to the `train` and `valid` directories. |
 | processed_data_path | str | Path where processed data will be saved |
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 | --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
 | --reshape_x | str | Reshape y data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
 | --flip_left_right | bool | Horizontally flip 50% of the data. Default: `False`. |
+| --flip_top_bottom | bool | Vertically flip 50% of the data. Default: `False`. |
 
 ### Train
 
