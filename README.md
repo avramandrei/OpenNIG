@@ -61,8 +61,8 @@ python3 process.py [train_dir_path] [valid_dir_path]
 | --normalize | str | Normalize data to `[-1,1]` or `[0,1]`. Default: `[-1,1]`. |
 | --reshape_y | str | Reshape x data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
 | --reshape_x | str | Reshape y data to specified shape. Shape must be specified as `(width,height)`. Default: `None`. |
-| --flip_left_right | bool | Horizontally flip 50% of the data. Default: `False`. |
-| --flip_top_bottom | bool | Vertically flip 50% of the data. Default: `False`. |
+| --flip_left_right | bool | Adds 50% horizontally flipped images to the dataset. Default: `False`. |
+| --flip_top_bottom | bool | Adds 50% vertically flipped images to the dataset. Default: `False`. |
 
 ### Train
 
