@@ -33,6 +33,10 @@ OpenNIG offers three demos databases that can be downloaded with the `download.p
 ```
 python3 download.py [database]
 ```
+
+|  Argument | Type | Description |
+| --- | --- | -- |
+| dataset | str | Dataset to be downloaded: `mnist`, `fashion-mnist` or `cifar10`. |
  
 ### Data processing
 
