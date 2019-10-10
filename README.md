@@ -36,6 +36,8 @@ python3 download.py [database]
  
 ### Data processing
 
+This step is optinal, it only intends to help you in processing data. Processed data must be saved in '.npy' format.
+
 If you want to use other datasets, you have to manually create two directories, `train` and `valid`, that contain the training and the validation images, respectevly. Run the `process.py` script to process the images in these directories. The script will create two files, `train.npy` and `valid.npy`.
 
 ```
