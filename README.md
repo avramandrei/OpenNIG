@@ -111,5 +111,19 @@ python3 generate.py [model] [model_path] [--num_sample] [--sample_save_path][--n
 | --num_sample | int | Number of samples to generate.Default: `10`. |
 | --sample_save_path | str | Save the samples at this path. Default: `samples`. |
 
+## Credits
+
+If you found this work useful, please consider citing the following [paper](https://ieeexplore.ieee.org/abstract/document/9142009):
+```
+@inproceedings{avram2020opennig,
+  title={OpenNIG-Open Neural Image Generator},
+  author={Avram, Andrei-Marius and Morogan, Luciana and Toma, Stefan-Adrian},
+  booktitle={2020 13th International Conference on Communications (COMM)},
+  pages={177--181},
+  year={2020},
+  organization={IEEE}
+}
+```
+
 
 
